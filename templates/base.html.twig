@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="{{ asset('css/variable.css')}}" rel="stylesheet">
+        <link href="{{ asset('css/disposition.css')}}" rel="stylesheet">
+        <link href="{{ asset('css/corp.css')}}" rel="stylesheet">
+        <link href="{{ asset('css/navBar.css')}}" rel="stylesheet">
+        <link href="{{ asset('css/element.css')}}" rel="stylesheet">
+        <link href="{{ asset('css/cursor.css')}}" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <title>{% block title %}Portfolio - {% endblock %}</title>
+    </head>
+
+    <body>
+
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <a href="{{path('accueil')}}">Nav bar</a>
+                </div>
+                <div id="mainListDiv" class="main_list">
+                    <ul class="navlinks">
+                        <li><a href="{{path('accueil')}}">Accueil</a></li>
+                        <li><a href="#">Nav2</a></li>
+                        <li><a href="#">Nav3</a></li>
+                    </ul>
+                </div>
+                <span class="navTrigger">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </span>
+            </div>
+        </nav>
+
+        <br><br><br><br><br>
+
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+        
+        <script type="text/javascript" src="{{ asset('js/script.js')}}"></script>
+
+    </body>
+</html>

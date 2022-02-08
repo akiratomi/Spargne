@@ -4,53 +4,8 @@
 
 {% block body %}
     <div class="row justify-content-center">
-        <div class="col-r-6">
-            <div class="col-11 m-auto">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr class="table-color-primary">
-                                <th>FIRST</th>
-                                <th>SECOND</th>
-                                <th>THIRD</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for i in range(0, 3) %}
-                            <tr class="{{ cycle(['table-color-secondary', 'table-color-tertiary'], loop.index0) }}">
-                                <td class="text-align-center">first</td>
-                                <td class="text-align-center">second</td>
-                                <td class="text-align-center">third</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-r-6">
-            <div class="col-11 m-auto">
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr class="table-color-primary">
-                                <th>FIRST</th>
-                                <th>SECOND</th>
-                                <th>THIRD</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for i in range(0, 3) %}
-                            <tr class="{{ cycle(['table-color-quaternary', 'table-color-quinary'], loop.index0) }}">
-                                <td class="text-align-center">first</td>
-                                <td class="text-align-center">second</td>
-                                <td class="text-align-center">third</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="col">
+            <h1 class="text-color-primary text-align-center">Hey</h1>
         </div>
     </div>
 {% endblock %}

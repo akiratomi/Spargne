@@ -18,13 +18,21 @@
         <nav class="nav">
             <div class="nav-container">
                 <div class="logo">
-                    <a href="{{path('accueil')}}">Nav bar</a>
+                    <a href="{{path('accueil')}}">S'pargne</a>
                 </div>
                 <div id="mainListDiv" class="main_list">
                     <ul class="navlinks">
                         <li><a href="{{path('accueil')}}">Accueil</a></li>
-                        <li><a href="#">Nav2</a></li>
-                        <li><a href="#">Nav3</a></li>
+                        <li>
+                            <a class="menu" href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 0 24 24" width="30px" fill="#113f59">
+                                    <path d="M0 0h24v24H0z" fill="none"/>
+                                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                                </svg> 
+                                Menu
+                            </a>
+                        </li>
+                        <li class="espace"><a href="#">Accéder à mon espace</a></li>
                     </ul>
                 </div>
                 <span class="navTrigger">
@@ -34,6 +42,18 @@
                 </span>
             </div>
         </nav>
+        <div id="navRight" class="navRightHide">
+            <ul>
+                <a href="#"><li>Action 1</li></a>
+                <a href="#"><li>Action 2</li></a>
+                <a href="#"><li>Action 3</li></a>
+                <a href="#"><li>Action 4</li></a>
+                <a href="#"><li>Action 5</li></a>
+                <a href="#"><li>Action 6</li></a>
+                <a href="#"><li>Action 7</li></a>
+            </ul>
+        </div>
+        
 
         <br><br><br><br><br>
 

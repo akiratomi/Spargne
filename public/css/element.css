@@ -1,4 +1,5 @@
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- Form Control -- ::::::::::::::::::::::::::::::::::::::::::::::: */
+
 .form-control {
     display: block;
     width: 100%;
@@ -13,6 +14,7 @@
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 .form-control:focus {
     color: var(--dark);
     background-color: var(--white);
@@ -26,13 +28,19 @@
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- Table -- ::::::::::::::::::::::::::::::::::::::::::::::: */
+
 table {
     caption-side: bottom;
     border-collapse: collapse;
 }
-thead, tbody, tfoot, tr, td, th {
+
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
     border-color: inherit;
     border-style: solid;
     border-width: 0;
@@ -47,22 +55,24 @@ thead, tbody, tfoot, tr, td, th {
     vertical-align: top;
     border-color: var(--secondary);
 }
-.table > :not(caption) > * > * {
+
+.table> :not(caption)>*>* {
     padding: 0.5rem 0.5rem;
     background-color: var(--bs-table-bg);
     border-bottom-width: 1px;
     box-shadow: inset 0 0 0 9999px var(--table-hover-bg);
 }
-.table > :not(:first-child) {
+
+.table> :not(:first-child) {
     border-top: 2px solid currentColor;
 }
 
-.table-hover > tbody > tr:hover > * {
+.table-hover>tbody>tr:hover>* {
     --table-hover-bg: var(--primary-rgba-5);
 }
 
 .table-responsive {
-  overflow-x: auto;
+    overflow-x: auto;
 }
 
 .table-color-primary {
@@ -70,21 +80,43 @@ thead, tbody, tfoot, tr, td, th {
     color: var(--white);
     border-color: var(--primary);
 }
+
 .table-color-secondary {
     --bs-table-bg: var(--secondary);
-    color: var(--white);
+    color: var(--primary);
     border-color: var(--secondary);
 }
+
+.table-color-tertiary {
+    --bs-table-bg: var(--tertiary);
+    color: var(--primary);
+    border-color: var(--tertiary);
+}
+
+.table-color-quaternary {
+    --bs-table-bg: var(--quaternary);
+    color: var(--primary);
+    border-color: var(--quaternary);
+}
+
+.table-color-quinary {
+    --bs-table-bg: var(--quinary);
+    color: var(--primary);
+    border-color: var(--quinary);
+}
+
 .table-color-warning {
     --bs-table-bg: var(--warning);
     color: var(--white);
     border-color: var(--warning);
 }
+
 .table-color-danger {
     --bs-table-bg: var(--danger);
     color: var(--white);
     border-color: var(--danger);
 }
+
 .table-color-dark {
     --bs-table-bg: var(--dark);
     color: var(--white);
@@ -92,8 +124,8 @@ thead, tbody, tfoot, tr, td, th {
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- Button -- ::::::::::::::::::::::::::::::::::::::::::::::: */
+
 button {
     display: inline-block;
     font-weight: 400;
@@ -111,8 +143,8 @@ button {
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- p -- ::::::::::::::::::::::::::::::::::::::::::::::: */
+
 p {
     margin: 0;
     margin-bottom: 5px;
@@ -125,17 +157,22 @@ p {
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- a -- ::::::::::::::::::::::::::::::::::::::::::::::: */
-.link{
+
+.link {
     text-decoration: none;
     color: var(--white);
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- h -- ::::::::::::::::::::::::::::::::::::::::::::::: */
-h1, h2, h3, h4, h5, h6 {
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin-top: 0;
     margin-bottom: 0.5rem;
     font-weight: 500;
@@ -158,15 +195,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- Textarea -- ::::::::::::::::::::::::::::::::::::::::::::::: */
+
 textarea {
     resize: vertical;
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- Img -- ::::::::::::::::::::::::::::::::::::::::::::::: */
+
 img {
     width: 100%;
 }
@@ -178,28 +215,30 @@ img {
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- Background Color -- ::::::::::::::::::::::::::::::::::::::::::::::: */
-.bg-color-primary{
+
+.bg-color-primary {
     background-color: var(--primary);
 }
-.bg-color-danger{
+
+.bg-color-danger {
     background-color: var(--danger);
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- Text Color -- ::::::::::::::::::::::::::::::::::::::::::::::: */
-.text-color-primary{
+
+.text-color-primary {
     color: var(--primary);
 }
-.text-color-white{
+
+.text-color-white {
     color: var(--white);
 }
 
 
-
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- Text Decoration -- ::::::::::::::::::::::::::::::::::::::::::::::: */
-.underline{
+
+.underline {
     text-decoration: underline;
 }

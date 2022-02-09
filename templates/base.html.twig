@@ -32,7 +32,11 @@
                                 Menu
                             </a>
                         </li>
-                        <li class="espace"><a href="#">Accéder à mon espace</a></li>
+                        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li class="espace"><a href="{{path('login')}}">Personal space</a></li>
+                        {% else %}
+                            <li class="espace"><a href="{{path('logout')}}">logout</a></li>
+                        {% endif %}
                     </ul>
                 </div>
                 <span class="navTrigger">
@@ -44,7 +48,19 @@
         </nav>
         <div id="navRight" class="navRightHide">
             <ul>
-                <a href="#"><li>Action 1</li></a>
+                {% if is_granted('ROLE_DIRECTOR') %}
+                    <h2 class="text-align-center text-color-quaternary mt-3 mb-3">Director menu</h2>
+                    <a href="{{path('personnelHireAdvisor')}}"><li>Company personnel</li></a>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADVISOR') %}
+                    <h2 class="text-align-center text-color-quaternary mt-3 mb-3">Advisor menu</h2>
+                {% endif %}
+
+                {% if is_granted('ROLE_SECRETARY') %}
+                    <h2 class="text-align-center text-color-quaternary mt-3 mb-3">Secretary menu</h2>
+                {% endif %}
+                
                 <a href="#"><li>Action 2</li></a>
                 <a href="#"><li>Action 3</li></a>
                 <a href="#"><li>Action 4</li></a>

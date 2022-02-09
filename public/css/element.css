@@ -7,24 +7,56 @@
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: var(--dark);
-    background-color: var(--white);
+    color: var(--primary);
+    background-color: var(--quaternary);
     background-clip: padding-box;
-    border: 1px solid var(--dark-gray);
+    border: none;
+    border-bottom: 3px solid var(--secondary);
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .form-control:focus {
-    color: var(--dark);
-    background-color: var(--white);
-    border-color: var(--gray);
+    color: var(--primary);
+    background-color: var(--quaternary);
+    border-color: var(--quinary);
     outline: 0;
     box-shadow: 0 0 0 0.25rem var(--primary-rgba-5);
 }
 
 .select-form {
     padding: 0.55rem 0.75rem;
+}
+
+.label {
+    color: var(--primary-5);
+    font-weight: 700;
+    font-size: larger;
+}
+
+.btn {
+    color: var(--quaternary);
+    font-weight: 700;
+}
+
+.btn-quinary {
+    background-color: var(--quinary);
+    border: 3px solid var(--quinary);
+    transition: all 200ms;
+}
+
+.btn-quinary:hover {
+    background-color: var(--quinary-7);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border: 3px solid var(--secondary);
+    transition: all 200ms;
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-7);
 }
 
 
@@ -232,8 +264,16 @@ img {
     color: var(--primary);
 }
 
+.text-color-quinary {
+    color: var(--quinary);
+}
+
 .text-color-white {
     color: var(--white);
+}
+
+.text-color-quaternary {
+    color: var(--quaternary);
 }
 
 

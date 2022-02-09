@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<div class="">
+    <div class="row justify-content-center">
+        <div class=" col-6">
+            <form action="{{ path('login') }}" method="post">
+                 
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
+                    </div>
+                {% endif %}
+
+                <h1 class="h3 mb-3 font-weight-normal text-align-center text-color-primary">Sign in to personal space</h1>
+                <label for="inputUuid" class="label">Personal ID</label>
+                <input type="text" value="{{ last_username }}" name="uuid" id="inputUuid" class="form-control mb-2" autocomplete="username" required autofocus>
+                
+                <label for="inputPassword" class="label">Password</label>
+                <input type="password" name="password" id="inputPassword" class="form-control mb-2" autocomplete="current-password" required>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                {% if error %}
+                    {% if error.messageKey == "Invalid credentials." %}
+                        <div class="text-color-danger mt-2">login ou mot de passe incorrect</div>
+                    {% else %}
+                        <div class="text-color-danger  mt-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+                {% endif %}
+
+                <button class="btn btn-secondary" type="submit">
+                    Sign in
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

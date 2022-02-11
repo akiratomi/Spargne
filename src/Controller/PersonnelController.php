@@ -79,6 +79,18 @@ class PersonnelController extends AbstractController
         ]);
     }
 
+    #[Route('/personnel/hire/advisor/delete/{id}', name: 'personnelHireAdvisorDelete')]
+    public function personnelHireAdvisorDelete(int $id): Response
+    {
+        $hire = $this->getDoctrine()->getRepository(Hire::class)->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($hire);
+        $em->flush();
+
+        return $this->redirectToRoute('personnelAdvisorList');
+    }
+
     #[Route('/personnel/hire/secretary', name: 'personnelHireSecretary')]
     public function personnelHireSecretary(MailerInterface $mailer): Response
     {
@@ -142,11 +154,24 @@ class PersonnelController extends AbstractController
         ]);
     }
 
+    #[Route('/personnel/hire/secretary/delete/{id}', name: 'personnelHireSecretaryDelete')]
+    public function personnelHireSecretaryDelete(int $id): Response
+    {
+        $hire = $this->getDoctrine()->getRepository(Hire::class)->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($hire);
+        $em->flush();
+
+        return $this->redirectToRoute('personnelSecretaryList');
+    }
+
     #[Route('/personnel/list/advisor', name: 'personnelAdvisorList')]
     public function personnelAdvisorList(): Response
     {
         $advisorType = $this->getDoctrine()->getRepository(HireType::class)->findBy(array('name'=>'advisor'));
-        $hires = $this->getDoctrine()->getRepository(Hire::class)->findBy(array('type'=>$advisorType));
+        $sendStatus = $this->getDoctrine()->getRepository(HireStatus::class)->findBy(array('name'=>'Send'));
+        $hires = $this->getDoctrine()->getRepository(Hire::class)->findBy(array('type'=>$advisorType, 'status'=>$sendStatus));
 
         $advisors = $this->getDoctrine()->getRepository(User::class)->findByRole('ADVISOR');
         return $this->render('personnel/personnelAdvisorList.html.twig', [
@@ -160,7 +185,8 @@ class PersonnelController extends AbstractController
     public function personnelSecretaryList(): Response
     {
         $secretaryType = $this->getDoctrine()->getRepository(HireType::class)->findBy(array('name'=>'secretary'));
-        $hires = $this->getDoctrine()->getRepository(Hire::class)->findBy(array('type'=>$secretaryType));
+        $sendStatus = $this->getDoctrine()->getRepository(HireStatus::class)->findBy(array('name'=>'Send'));
+        $hires = $this->getDoctrine()->getRepository(Hire::class)->findBy(array('type'=>$secretaryType, 'status'=>$sendStatus));
 
         $secretarys = $this->getDoctrine()->getRepository(User::class)->findByRole('SECRETARY');
 

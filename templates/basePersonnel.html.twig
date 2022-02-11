@@ -2,18 +2,28 @@
 
 
 {% block body %}
+    
+    <svg id="openButtonId" class="openButton" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">   
+        <path d="M0 0h24v24H0z" fill="none"/>
+        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+    </svg>
     <div class="row justify-content-center">
         <div class="col-2">
-            <nav>
-                <div>
+            <nav id="nav-personnel-id" class="nav-personnel hide">
+                <div class="mainList-personel">
                     <ul class="navlinks">
                         <a href="{{path('personnelHireAdvisor')}}"><li class="text-color-primary">Hire advisor</li></a>
                         <a href="{{path('personnelHireSecretary')}}"><li class="text-color-primary">Hire secretary</li></a>
-                        <a href="{{path('personnelHireAdvisor')}}"><li class="text-color-primary">Advisor list</li></a>
-                        <a href="{{path('personnelHireAdvisor')}}"><li class="text-color-primary">Secretary list</li></a>
+                        <a href="{{path('personnelAdvisorList')}}"><li class="text-color-primary">Advisor list</li></a>
+                        <a href="{{path('personnelSecretaryList')}}"><li class="text-color-primary">Secretary list</li></a>
                     </ul>
                 </div>
+                <svg id="closeButtonId" class="closeButton" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
+                    <path d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
             </nav>
+            
         </div>
         <div class="col-10">
             {% block personnel %}{% endblock %}

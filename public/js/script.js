@@ -26,3 +26,23 @@ $('.menu').click(function() {
         triggered_menu = false;
     }
 });
+
+var admin_menu = false;
+
+$('#openButtonId').click(function() {
+    if (admin_menu == false) {
+        $("#nav-personnel-id").removeClass("hide");
+        $("#nav-personnel-id").addClass("show");
+        $('#openButtonId').hide();
+        admin_menu = true;
+    }
+});
+
+$('#closeButtonId').click(function() {
+    if (admin_menu == true) {
+        $("#nav-personnel-id").removeClass("show");
+        $("#nav-personnel-id").addClass("hide");
+        $('#openButtonId').show();
+        admin_menu = false;
+    }
+});

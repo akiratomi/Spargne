@@ -100,11 +100,33 @@ th {
 }
 
 .table-hover>tbody>tr:hover>* {
-    --table-hover-bg: var(--primary-rgba-5);
+    --table-hover-bg: var(--primary-5);
 }
 
 .table-responsive {
     overflow-x: auto;
+}
+
+.th-quaternary th {
+    border-left: 1px solid var(--quaternary-1);
+    border-right: 1px solid var(--quaternary-1);
+}
+
+.td-quaternary td {
+    border-left: 1px solid var(--quaternary-1);
+    border-right: 1px solid var(--quaternary-1);
+}
+
+.th-primary th {
+    border-left: 1px solid var(--primary-1);
+    border-right: 1px solid var(--primary-1);
+    border-bottom: 1px solid var(--primary-1);
+}
+
+.td-primary td {
+    border-left: 1px solid var(--primary-1);
+    border-right: 1px solid var(--primary-1);
+    border-bottom: 1px solid var(--primary-1);
 }
 
 .table-color-primary {
@@ -113,9 +135,21 @@ th {
     border-color: var(--primary);
 }
 
+.table-color-primary-7 {
+    --bs-table-bg: var(--primary-7);
+    color: var(--white);
+    border-color: var(--primary-7);
+}
+
+.table-color-primary-6 {
+    --bs-table-bg: var(--primary-6);
+    color: var(--white);
+    border-color: var(--primary-6);
+}
+
 .table-color-secondary {
     --bs-table-bg: var(--secondary);
-    color: var(--primary);
+    color: var(--white);
     border-color: var(--secondary);
 }
 
@@ -274,6 +308,46 @@ img {
 
 .text-color-quaternary {
     color: var(--quaternary);
+}
+
+.text-color-success {
+    color: var(--success);
+}
+
+.text-color-warning {
+    color: var(--warning);
+}
+
+.text-color-danger {
+    color: var(--danger);
+}
+
+.text-size-10 {
+    font-size: 10px;
+}
+
+.text-size-12 {
+    font-size: 12px;
+}
+
+.text-size-11 {
+    font-size: 14px;
+}
+
+.text-size-16 {
+    font-size: 16px;
+}
+
+.text-size-18 {
+    font-size: 18px;
+}
+
+.text-size-20 {
+    font-size: 20px;
+}
+
+.text-bold {
+    font-weight: bold;
 }
 
 

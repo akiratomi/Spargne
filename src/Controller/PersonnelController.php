@@ -10,6 +10,7 @@ use App\Entity\Mail;
 use App\Entity\Hire;
 use App\Entity\HireStatus;
 use App\Entity\HireType;
+use App\Entity\User;
 
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -138,6 +139,35 @@ class PersonnelController extends AbstractController
 
         return $this->render('personnel/personnelHireSecretary.html.twig', [
             'controller_name' => 'PersonnelController',
+        ]);
+    }
+
+    #[Route('/personnel/list/advisor', name: 'personnelAdvisorList')]
+    public function personnelAdvisorList(): Response
+    {
+        $advisorType = $this->getDoctrine()->getRepository(HireType::class)->findBy(array('name'=>'advisor'));
+        $hires = $this->getDoctrine()->getRepository(Hire::class)->findBy(array('type'=>$advisorType));
+
+        $advisors = $this->getDoctrine()->getRepository(User::class)->findByRole('ADVISOR');
+        return $this->render('personnel/personnelAdvisorList.html.twig', [
+            'controller_name' => 'PersonnelController',
+            'advisors' => $advisors,
+            'hires' => $hires,
+        ]);
+    }
+
+    #[Route('/personnel/list/secretary', name: 'personnelSecretaryList')]
+    public function personnelSecretaryList(): Response
+    {
+        $secretaryType = $this->getDoctrine()->getRepository(HireType::class)->findBy(array('name'=>'secretary'));
+        $hires = $this->getDoctrine()->getRepository(Hire::class)->findBy(array('type'=>$secretaryType));
+
+        $secretarys = $this->getDoctrine()->getRepository(User::class)->findByRole('SECRETARY');
+
+        return $this->render('personnel/personnelSecretaryList.html.twig', [
+            'controller_name' => 'PersonnelController',
+            'secretarys' => $secretarys,
+            'hires' => $hires,
         ]);
     }
 

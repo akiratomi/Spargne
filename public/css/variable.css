@@ -82,10 +82,14 @@
     --tertiary: #d4e0cc;
     --quaternary: #dadbdd;
     --quinary: #d8c788;
+    --success: #1bc429;
+    --warning: #cfa200;
+    --danger: #ac0707;
     --primary-1: rgba(17, 63, 89, 0.1);
     --primary-2: rgba(17, 63, 89, 0.2);
     --primary-4: rgba(17, 63, 89, 0.4);
     --primary-5: rgba(17, 63, 89, 0.5);
+    --primary-6: rgba(17, 63, 89, 0.6);
     --primary-7: rgba(17, 63, 89, 0.7);
     --secondary-2: rgba(52, 120, 143, 0.2);
     --secondary-4: rgba(52, 120, 143, 0.4);
@@ -97,6 +101,7 @@
     --tertiary-5: rgba(212, 224, 204, 0.5);
     --tertiary-7: rgba(212, 224, 204, 0.7);
     --tertiary-9: rgba(212, 224, 204, 0.9);
+    --quaternary-1: rgba(218, 219, 221, 0.1);
     --quaternary-2: rgba(218, 219, 221, 0.2);
     --quaternary-4: rgba(218, 219, 221, 0.4);
     --quaternary-5: rgba(218, 219, 221, 0.5);

@@ -3,9 +3,13 @@
 {% block title %}Hello AccueilController!{% endblock %}
 
 {% block body %}
-    <div class="row justify-content-center">
-        <div class="col">
-            <h1 class="text-color-primary text-align-center">Hey</h1>
+    <div class="row justify-content-center text-align-center">
+        <div class="col-3">
+            <h1 class="text-color-primary text-align-center">Welcome to S'Pargne bank web site.</h1>
+            <p class="text-color-primary text-align-center">You wish own a free bank account. Please send a register request :</p>
+            <a href="{{path('customerRequest')}}"><button class="btn btn-secondary">
+                New account request
+            </button></a>
         </div>
     </div>
 {% endblock %}

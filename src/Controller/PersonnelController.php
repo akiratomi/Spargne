@@ -171,7 +171,8 @@ class PersonnelController extends AbstractController
     {
         $advisorType = $this->getDoctrine()->getRepository(HireType::class)->findBy(array('name'=>'advisor'));
         $sendStatus = $this->getDoctrine()->getRepository(HireStatus::class)->findBy(array('name'=>'Send'));
-        $hires = $this->getDoctrine()->getRepository(Hire::class)->findBy(array('type'=>$advisorType, 'status'=>$sendStatus));
+        $refusedStatus = $this->getDoctrine()->getRepository(HireStatus::class)->findBy(array('name'=>'Refused'));
+        $hires = $this->getDoctrine()->getRepository(Hire::class)->findBy(array('type'=>$advisorType, 'status'=>$sendStatus, 'status'=>$refusedStatus));
 
         $advisors = $this->getDoctrine()->getRepository(User::class)->findByRole('ADVISOR');
         return $this->render('personnel/personnelAdvisorList.html.twig', [

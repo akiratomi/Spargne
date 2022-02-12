@@ -59,6 +59,16 @@
     background-color: var(--secondary-7);
 }
 
+.btn-danger {
+    background-color: var(--danger);
+    border: 3px solid var(--danger);
+    transition: all 200ms;
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-7);
+}
+
 
 /* ::::::::::::::::::::::::::::::::::::::::::::::: -- Table -- ::::::::::::::::::::::::::::::::::::::::::::::: */
 

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CustomerRegisterController!{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-6">
+        <div class="row justify-content-center text-align-center">
+            <div class="col-8">
+                <h1 class="text-color-primary">Welcome to the register request page.</h1>
+
+                <form action="{{ path('customerRequest') }}" method="post">
+                    <div class="row justify-content-center mb-3 mt-3">
+                        <div class="col-6 text-align-center mr-1 text-color-primary">
+                            <label for="email" class="label">Enter a valid email :</label>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-6">
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Email address ..." required autofocus>
+                        </div>
+
+                        
+                        <div class="col-3 text-align-center ml-1 text-color-primary">
+                            <button class="btn btn-secondary" type="submit" name="customerRequestBtn">
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                    {% if error is defined %}
+                        <div class="row justify-content-center">
+                            <div class="col">
+                                <h1 class="text-color-quinary text-align-center">Please enter a valid address</h1>
+                            </div>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        
+    </div>
+</div>
+{% endblock %}

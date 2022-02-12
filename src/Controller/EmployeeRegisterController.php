@@ -119,6 +119,7 @@ class EmployeeRegisterController extends AbstractController
         return $this->render('employee_register/advisor.html.twig', [
             'controller_name' => 'EmployeeRegisterController',
             'form' => $form->createView(),
+            'hire' => $test,
         ]);
     }
 
@@ -224,6 +225,21 @@ class EmployeeRegisterController extends AbstractController
             'controller_name' => 'EmployeeRegisterController',
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/gettingHire/declineHire/{id}', name: 'declineHire')]
+    public function declineHire(int $id): Response
+    {
+        $refusedStatus = $this->getDoctrine()->getRepository(HireStatus::class)->findOneBy(array('name'=>'Refused'));
+        $hire = $this->getDoctrine()->getRepository(Hire::class)->find($id);
+
+        $hire->setStatus($refusedStatus);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($hire);
+        $em->flush();
+
+        return $this->redirectToRoute('accueil');
     }
 
     public function generateUID($length)

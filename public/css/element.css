@@ -28,6 +28,10 @@
     padding: 0.55rem 0.75rem;
 }
 
+.hidden-form {
+    display: none;
+}
+
 .label {
     color: var(--primary-5);
     font-weight: 700;

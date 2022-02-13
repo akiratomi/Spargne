@@ -31,7 +31,14 @@
                     {% if error is defined %}
                         <div class="row justify-content-center">
                             <div class="col">
-                                <h1 class="text-color-quinary text-align-center">Please enter a valid address</h1>
+                                <h2 class="text-color-quinary text-align-center">Please enter a valid address</h2>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if advice is defined %}
+                        <div class="row justify-content-center">
+                            <div class="col">
+                                <h2 class="text-color-quinary text-align-center">{{advice}}</h2>
                             </div>
                         </div>
                     {% endif %}

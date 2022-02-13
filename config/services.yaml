@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     website_url: 'http://s4-8012.nuage-peda.fr/public/Spargne/public/'
+    file_directory_twig: 'http://s4-8012.nuage-peda.fr/public/Spargne/'
+    file_directory: '%kernel.project_dir%/document/'
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -86,6 +86,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $phoneNumber;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Document::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $IdCardFront;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Document::class, inversedBy="user", cascade={"persist", "remove"})
+     */
+    private $IdCardBack;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Document::class, cascade={"persist", "remove"})
+     */
+    private $ProofOfAddress;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -291,6 +306,42 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPhoneNumber(string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
+    }
+
+    public function getIdCardFront(): ?Document
+    {
+        return $this->IdCardFront;
+    }
+
+    public function setIdCardFront(?Document $IdCardFront): self
+    {
+        $this->IdCardFront = $IdCardFront;
+
+        return $this;
+    }
+
+    public function getIdCardBack(): ?Document
+    {
+        return $this->IdCardBack;
+    }
+
+    public function setIdCardBack(?Document $IdCardBack): self
+    {
+        $this->IdCardBack = $IdCardBack;
+
+        return $this;
+    }
+
+    public function getProofOfAddress(): ?Document
+    {
+        return $this->ProofOfAddress;
+    }
+
+    public function setProofOfAddress(?Document $ProofOfAddress): self
+    {
+        $this->ProofOfAddress = $ProofOfAddress;
 
         return $this;
     }

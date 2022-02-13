@@ -32,6 +32,11 @@ class CustomerRequest
      */
     private $requestDate;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $verified;
+
 
     public function getId(): ?int
     {
@@ -70,6 +75,18 @@ class CustomerRequest
     public function setRequestDate(\DateTimeInterface $requestDate): self
     {
         $this->requestDate = $requestDate;
+
+        return $this;
+    }
+
+    public function getVerified(): ?bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(bool $verified): self
+    {
+        $this->verified = $verified;
 
         return $this;
     }

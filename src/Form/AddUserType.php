@@ -10,14 +10,18 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 
 class AddUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $emailUser = $options['emailUser'];
         $builder
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class,[
+                'data'=>$emailUser,
+            ])
             ->add('name')
             ->add('firstName')
             ->add('phoneNumber')
@@ -25,6 +29,7 @@ class AddUserType extends AbstractType
             ->add('postalCode')
             ->add('city')
             ->add('postalAddress')
+
             
             ->add('Register', SubmitType::class);
         ;
@@ -34,6 +39,7 @@ class AddUserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
+            'emailUser' => null
         ]);
     }
 }

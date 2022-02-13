@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CustomerRegisterController!{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-6">
+        {% if error is defined %}
+         <div class="row justify-content-center text-align-center">
+            <div class="col-8">
+                <h1 class="text-color-primary">{{error}}.</h1>
+            </div>
+        </div>
+        {% else %}
+            <div class="row justify-content-center text-align-center">
+                <div class="col-8">
+                    <h1 class="text-color-primary">Welcome to the register request page.</h1>
+
+                        {{ form_start(form) }}
+                        {{form_label(form.email, 'Email address :', {'label_attr':{'class':'label hidden-form'}} )}}
+                        {{form_widget(form.email, {'attr':{'class':'form-control mb-2 hidden-form'}})}}
+
+                        {{form_label(form.name, 'Name :', {'label_attr':{'class':'label'}} )}}
+                        {{form_widget(form.name, {'attr':{'class':'form-control  mb-2'}})}}
+
+                        {{form_label(form.firstName, 'First name :', {'label_attr':{'class':'label'}} )}}
+                        {{form_widget(form.firstName, {'attr':{'class':'form-control  mb-2'}})}}
+
+                        {{form_label(form.phoneNumber, 'Phone number :', {'label_attr':{'class':'label'}} )}}
+                        {{form_widget(form.phoneNumber, {'attr':{'class':'form-control  mb-2'}})}}
+
+                        {{form_label(form.country, 'Country :', {'label_attr':{'class':'label'}} )}}
+                        {{form_widget(form.country, {'attr':{'class':'form-control  mb-2'}})}}
+
+                        {{form_label(form.postalCode, 'Postal code :', {'label_attr':{'class':'label'}} )}}
+                        {{form_widget(form.postalCode, {'attr':{'class':'form-control  mb-2'}})}}
+
+                        {{form_label(form.city, 'City :', {'label_attr':{'class':'label'}} )}}
+                        {{form_widget(form.city, {'attr':{'class':'form-control  mb-2'}})}}
+
+                        {{form_label(form.postalAddress, 'Postal address :', {'label_attr':{'class':'label'}} )}}
+                        {{form_widget(form.postalAddress, {'attr':{'class':'form-control  mb-2'}})}}
+
+                        {{form_widget(form.Register, {'attr':{'class':'btn btn-secondary'}})}}
+                        {{form_end(form, {render_rest: true})}}
+
+                        
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-6">
+        
+    </div>
+</div>
+{% endblock %}

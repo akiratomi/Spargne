@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfilController!{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-6">
+        <div class="row justify-content-center mb-2 mt-3">
+            <div class="col-6 text-align-left mr-1 text-color-primary">
+                <h1>Please modify your password.</h1>
+                <h2>Your password must contain 8 caracters (only number).</h2>
+            </div>
+        </div>
+
+        <form action="{{ path('modifyMdp') }}" method="post">
+            <div class="row justify-content-center mb-2 mt-3">
+                <div class="col-6 text-align-left mr-1 text-color-primary">
+                    <label for="password" class="label">New password :</label>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <input type="password" name="password" id="inputPassword" class="form-control mb-2" required readonly="true">
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-6">
+                    <div id="numbersPassword" class="row mt-3 mb-3">
+
+                    </div>
+                </div>
+            </div>
+            
+
+            {% if error is defined %}
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                        <p class="text-color-quaternary">{{error}}</p>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            <div class="row justify-content-center text-align-center mt-3">
+                <div class="col-6">
+                    <button class="btn btn-secondary" type="submit" name="modifyMdpBtn">
+                        Create new pass word
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-6">
+        
+    </div>
+</div>
+
+<script type="text/javascript" src="{{ asset('js/scriptPassword.js')}}"></script>
+
+{% endblock %}

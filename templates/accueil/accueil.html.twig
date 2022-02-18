@@ -3,28 +3,49 @@
 {% block title %}Hello AccueilController!{% endblock %}
 
 {% block body %}
-    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-        <div class="row justify-content-center text-align-center">
-            <div class="col-3">
-                <h1 class="text-color-primary text-align-center">Welcome to S'Pargne bank web site.</h1>
-                <p class="text-color-primary text-align-center">You wish own a free bank account. Please send a register request :</p>
-                <a href="{{path('customerRequest')}}"><button class="btn btn-secondary">
-                    New account request
-                </button></a>
-            </div>
-        </div>
-    {% else %}
-        {% if is_granted('ROLE_CUSTOMER_REQUEST') %}
-            <div class="row justify-content-center text-align-center">
-                <div class="col-3">
-                    <h1 class="text-color-primary text-align-center">Welcome to S'Pargne bank web site.</h1>
-                    <p class="text-color-primary text-align-center">Your account is in a confirm status. Please fill necessarys documents to complete your register :</p>
-                    <a href="{{path('customerRequestProfil')}}"><button class="btn btn-secondary">
-                        Access Profil
-                    </button></a>
+<div class="row">
+    <div class="col-6">
+        {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                <div class="row justify-content-center text-align-center">
+                    <div class="col-8">
+                        <h1 class="text-color-primary text-align-center">Welcome to S'Pargne bank web site.</h1>
+                        <p class="text-color-primary text-align-center">You wish own a free bank account. Please send a register request :</p>
+                        <a href="{{path('customerRequest')}}"><button class="btn btn-secondary">
+                            New account request
+                        </button></a>
+                    </div>
                 </div>
-            </div>
+            
+        {% else %}
+            {% if is_granted('ROLE_CUSTOMER_REQUEST') %}
+                <div class="row justify-content-center text-align-center">
+                    <div class="col-3">
+                        <h1 class="text-color-primary text-align-center">Welcome to S'Pargne bank web site.</h1>
+                        <p class="text-color-primary text-align-center">Your account is in a confirm status. Please fill necessarys documents to complete your register :</p>
+                        <a href="{{path('customerRequestProfil')}}"><button class="btn btn-secondary">
+                            Access Profil
+                        </button></a>
+                    </div>
+                </div>
+            {% else %}
+                {% if app.user.firstMdp %}
+                    <div class="row justify-content-center text-align-center">
+                        <div class="col-8">
+                            <div class="firstMdpInfo">
+                                <h1 class="text-color-primary text-align-center">Your password has been automatically generated.</h1>
+                                <p class="text-color-primary text-align-center">Please modify it :</p>
+                                <a href="{{path('modifyMdp')}}"><button class="btn btn-secondary">
+                                    Modify Password
+                                </button></a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
         {% endif %}
-    {% endif %}
-    
+    </div>
+
+    <div class="col-6">
+    </div>
+</div>
 {% endblock %}

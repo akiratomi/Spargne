@@ -10,6 +10,8 @@ use App\Form\AddUserType;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class SecurityController extends AbstractController
 {
@@ -59,5 +61,90 @@ class SecurityController extends AbstractController
             'controller_name' => 'AuthentificationController',
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route('/forgottenPassword', name: 'forgottenPassword')]
+    public function forgottenPassword(UserPasswordHasherInterface $passwordHasher, MailerInterface $mailer): Response
+    {
+            if(isset($_POST['forgottenPasswordBtn'])){
+                $uuid = $_POST['uuid'];
+                $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('uuid'=>$uuid));
+                if($user != null){
+                    $password = $this->generatePassword(8);
+
+                    $user->setPassword($passwordHasher->hashPassword($user,$password));
+                    
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($user);
+                    $em->flush();
+
+                    $body = '<p>Your password has been re-generate.</p>
+                    <p>Please login to your personal space to modify it.</p>
+                    <p>Your new password : '.$password.'.</p>
+                    <p>Link to connect : <a href="'.$this->getParameter('website_url').'login">S\'Pargne Personal Space Login</a></p>';
+        
+                    $html = $this->generateHtml($body);
+        
+                    $email = (new Email())
+                    ->from('victor.robin@epsi.fr')
+                    ->to($user->getEmail())
+                    ->subject('S\'Pargne recover')
+                    ->html($html);
+        
+                    try {
+                        $mailer->send($email);
+                    } catch (TransportExceptionInterface $e) {
+                        return $this->render('security/forgottenPassword.html.twig', [
+                            'controller_name' => 'ProfilController',
+                            'error' => 'An error occured.',
+                        ]);
+                    }
+
+                    return $this->render('security/forgottenPassword.html.twig', [
+                        'controller_name' => 'ProfilController',
+                        'error' => 'Your email has been re-generated. An email has been sent to your email address.',
+                    ]);
+                }else{
+                    return $this->render('security/forgottenPassword.html.twig', [
+                        'controller_name' => 'AuthentificationController',
+                        'error' => 'Id not found'
+                    ]);
+                }
+            }
+
+        return $this->render('security/forgottenPassword.html.twig', [
+            'controller_name' => 'AuthentificationController',
+        ]);
+    }
+
+    public function generateHtml($body)
+    {
+        $html = '
+            <html lang="fr">
+            <head>
+            <meta charset="utf-8">
+            <title>Titre de la page</title>
+            <link rel=\_"stylesheet" href="style.css">
+            <script src="script.js"></script>
+            </head>
+            <style>
+            </style>
+            <body>'.$body.'</body>
+            </html>
+            ';
+
+        return($html);
+    }
+
+    public function generatePassword($length)
+    {
+        $chars = '0123456789';
+        $chars_length = strlen($chars);
+        $password = '';
+        for ($i = 0; $i < $length; $i++)
+        {
+            $password .= $chars[rand(0, $chars_length - 1)];
+        }
+        return $password;
     }
 }

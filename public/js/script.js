@@ -14,18 +14,35 @@ $('.navTrigger').click(function() {
     }
 });
 var triggered_menu = false;
+var triggered_menu_profil = false;
+
+$('#navRightUlProfil').hide();
 
 $('.menu').click(function() {
     if (triggered_menu == false) {
         $("#navRight").removeClass("navRightHide");
         $("#navRight").addClass("navRightShow");
         triggered_menu = true;
+        triggered_menu_profil = false;
     } else {
         $("#navRight").removeClass("navRightShow");
         $("#navRight").addClass("navRightHide");
         triggered_menu = false;
+        triggered_menu_profil = false;
     }
 });
+
+$('.navigateProfil').click(function() {
+    if (triggered_menu_profil == false) {
+        $('#navRightUlBasic').hide();
+        $('#navRightUlProfil').show();
+        triggered_menu_profil = true;
+    } else {
+        $('#navRightUlProfil').hide();
+        $('#navRightUlBasic').show();
+        triggered_menu_profil = false;
+    }
+})
 
 var admin_menu = false;
 
@@ -46,3 +63,15 @@ $('#closeButtonId').click(function() {
         admin_menu = false;
     }
 });
+
+$('#emailAddressModify').click(function() {
+    $('.overlay_email').css("display", "block")
+})
+$('#phoneModify').click(function() {
+    $('.overlay_phone').css("display", "block")
+})
+
+$('.close').click(function() {
+    $('.overlay_email').css("display", "none")
+    $('.overlay_phone').css("display", "none")
+})

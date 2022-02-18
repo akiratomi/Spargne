@@ -10,8 +10,8 @@
                  
 
                 {% if app.user %}
-                    <div class="mb-3">
-                        You are logged in as {{ app.user.username }}, <a href="{{ path('logout') }}">Logout</a>
+                    <div class="row justify-content-center text-align-center text-color-primary">
+                        <h1>{{ app.user.username }}</h1> <a href="{{ path('logout') }}">Logout</a>
                     </div>
                 {% endif %}
 
@@ -20,25 +20,42 @@
                 <input type="text" value="{{ last_username }}" name="uuid" id="inputUuid" class="form-control mb-2" autocomplete="username" required autofocus>
                 
                 <label for="inputPassword" class="label">Password</label>
-                <input type="password" name="password" id="inputPassword" class="form-control mb-2" autocomplete="current-password" required>
+                <input type="password" name="password" id="inputPassword" class="form-control mb-2" required readonly="true">
+                
+                
+                <div id="numbersPassword" class="row mt-3 mb-3">
+
+                </div>
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                 {% if error %}
                     {% if error.messageKey == "Invalid credentials." %}
-                        <div class="text-color-danger mt-2">login ou mot de passe incorrect</div>
+                        <div class="text-color-danger mt-2">Password or login incorrect</div>
                     {% else %}
                         <div class="text-color-danger  mt-2">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
                 {% endif %}
-
-                <button class="btn btn-secondary" type="submit">
-                    Sign in
-                </button>
+                
+                <div class="row">
+                    <div class="col-3">
+                        <button class="btn btn-secondary" type="submit">
+                            Sign in
+                        </button>
+                    </div>
+                
             </form>
+                    <div class="col-6">
+                        <form action="{{ path('forgottenPassword') }}" method="post">
+                            <button class="btn btn-quinary text-color-secondary">
+                                Forgot your password
+                            </button>
+                        </form>
+                    </div>
+                </div>
         </div>
     </div>
 </div>
 
-
+<script type="text/javascript" src="{{ asset('js/scriptPassword.js')}}"></script>
 {% endblock %}

@@ -3,31 +3,49 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
+use App\Controller\Custom\GetUserByUuid;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  */
+#[ApiResource(normalizationContext:['groups' => ['read']],
+itemOperations:["GET" => ['method' => 'GET', 'path' => '/users/{uuid}', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"],
+    'GETBYUUID' => ['method' => 'GET', 'path' => '/users/getByUuid/{uuid}', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"],
+
+],
+collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object == user"]] 
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ApiProperty(identifier=false)
      */
+    #[Groups(["read"])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @ApiProperty(identifier=true)
      */
+    #[Groups(["read"])]
     private $uuid;
 
     /**
      * @ORM\Column(type="json")
      */
+    #[Groups(["read"])]
     private $roles = [];
 
     /**
@@ -39,26 +57,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $postalAddress;
 
     /**
      * @ORM\Column(type="date")
      */
+    #[Groups(["read"])]
     private $registerDate;
 
     /**
@@ -69,37 +92,68 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $postalCode;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $country;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $phoneNumber;
 
     /**
-     * @ORM\OneToOne(targetEntity=Document::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Document::class, inversedBy="user1", cascade={"persist", "remove"})
      */
     private $IdCardFront;
 
     /**
-     * @ORM\OneToOne(targetEntity=Document::class, inversedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Document::class, inversedBy="user2", cascade={"persist", "remove"})
      */
     private $IdCardBack;
 
     /**
-     * @ORM\OneToOne(targetEntity=Document::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Document::class, inversedBy="user3", cascade={"persist", "remove"})
      */
     private $ProofOfAddress;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="customers")
+     */
+    private $advisor;
+
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="advisor")
+     */
+    private $customers;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ModifyProfil::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $modifyProfils;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $firstMdp;
+
+    public function __construct()
+    {
+        $this->customers = new ArrayCollection();
+        $this->modifyProfils = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -142,8 +196,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -342,6 +394,90 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProofOfAddress(?Document $ProofOfAddress): self
     {
         $this->ProofOfAddress = $ProofOfAddress;
+
+        return $this;
+    }
+
+    public function getAdvisor(): ?self
+    {
+        return $this->advisor;
+    }
+
+    public function setAdvisor(?self $advisor): self
+    {
+        $this->advisor = $advisor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getCustomers(): Collection
+    {
+        return $this->customers;
+    }
+
+    public function addCustomer(self $customer): self
+    {
+        if (!$this->customers->contains($customer)) {
+            $this->customers[] = $customer;
+            $customer->setAdvisor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCustomer(self $customer): self
+    {
+        if ($this->customers->removeElement($customer)) {
+            // set the owning side to null (unless already changed)
+            if ($customer->getAdvisor() === $this) {
+                $customer->setAdvisor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ModifyProfil[]
+     */
+    public function getModifyProfils(): Collection
+    {
+        return $this->modifyProfils;
+    }
+
+    public function addModifyProfil(ModifyProfil $modifyProfil): self
+    {
+        if (!$this->modifyProfils->contains($modifyProfil)) {
+            $this->modifyProfils[] = $modifyProfil;
+            $modifyProfil->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeModifyProfil(ModifyProfil $modifyProfil): self
+    {
+        if ($this->modifyProfils->removeElement($modifyProfil)) {
+            // set the owning side to null (unless already changed)
+            if ($modifyProfil->getUser() === $this) {
+                $modifyProfil->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFirstMdp(): ?bool
+    {
+        return $this->firstMdp;
+    }
+
+    public function setFirstMdp(bool $firstMdp): self
+    {
+        $this->firstMdp = $firstMdp;
 
         return $this;
     }

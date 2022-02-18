@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProfilController!{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center text-align-center text-color-primary">
+    <div class="col">
+        {% if message is defined %}
+            <h1>{{message}}</h1>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

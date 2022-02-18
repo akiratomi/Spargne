@@ -9,6 +9,7 @@
         <link href="{{ asset('css/navBar.css')}}" rel="stylesheet">
         <link href="{{ asset('css/navPersonnel.css')}}" rel="stylesheet">
         <link href="{{ asset('css/element.css')}}" rel="stylesheet">
+        <link href="{{ asset('css/stylePerso.css')}}" rel="stylesheet">
         <link href="{{ asset('css/cursor.css')}}" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
@@ -17,7 +18,8 @@
     </head>
 
     <body>
-
+        
+        
         <nav class="nav">
             <div class="nav-container">
                 <div class="logo">
@@ -25,7 +27,7 @@
                 </div>
                 <div id="mainListDiv" class="main_list">
                     <ul class="navlinks">
-                        <li><a href="{{path('accueil')}}">Accueil</a></li>
+                        <li><a href="{{path('accueil')}}">Home Page</a></li>
                         <li>
                             <a class="menu" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 0 24 24" width="30px" fill="#113f59">
@@ -50,10 +52,9 @@
             </div>
         </nav>
         <div id="navRight" class="navRightHide">
-            <ul>
+            <ul id="navRightUlBasic">
                 {% if is_granted('ROLE_DIRECTOR') %}
                     <h2 class="text-align-center text-color-quaternary mt-3 mb-3">Director menu</h2>
-                    <a href="{{path('personnelHireAdvisor')}}"><li>Company personnel</li></a>
                 {% endif %}
 
                 {% if is_granted('ROLE_ADVISOR') %}
@@ -63,6 +64,44 @@
                 {% if is_granted('ROLE_SECRETARY') %}
                     <h2 class="text-align-center text-color-quaternary mt-3 mb-3">Secretary menu</h2>
                 {% endif %}
+
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li>
+                    <div class="cardProfil">
+                        <div class="logo">
+                            <p class="logoName">{{app.user.name |slice(0, 1)|upper }} </p>
+                            <p class="logoName">{{app.user.firstName |slice(0, 1)|upper }}</p>
+                        </div>
+                        <div class="names">
+                            <p class="name">{{app.user.name}}</p>
+                            <p class="firstName">{{app.user.firstName}}</p>
+                        </div>
+                        <div class="manage navigateProfil">
+                            <p>Manage Profil</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFF">
+                                <g>
+                                    <path d="M0,0h24v24H0V0z" fill="none"/>
+                                </g>
+                                <g>
+                                    <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                                </g>
+                            </svg>    
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
+
+
+                {% if is_granted('ROLE_DIRECTOR') %}
+                    <a href="{{path('personnelHireAdvisor')}}"><li>Company personnel</li></a>
+                {% endif %}
+
+                {% if is_granted('ROLE_ADVISOR') %}
+                    <a href="{{path('customerRequests')}}"><li>Customer Requests</li></a>
+                {% endif %}
+
+                {% if is_granted('ROLE_SECRETARY') %}
+                {% endif %}
                 
                 <a href="#"><li>Action 2</li></a>
                 <a href="#"><li>Action 3</li></a>
@@ -71,6 +110,81 @@
                 <a href="#"><li>Action 6</li></a>
                 <a href="#"><li>Action 7</li></a>
             </ul>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}    
+            <ul id="navRightUlProfil">
+                <li class="navigateProfil title">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFF">
+                            <path d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M11.67 3.87L9.9 2.1 0 12l9.9 9.9 1.77-1.77L3.54 12z"/>
+                        </svg>
+                    </div>
+                    <p>Profil</p>
+                </li>
+                <h2>Contact details</h2>
+                <a href="#" id="emailAddressModify">
+                    <li>
+                        <div class="details">
+                            <p class="un">Email address</p>
+                            <p class="deux">{{app.user.email}}</p>
+                        </div>
+
+                        <div class="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFF">
+                                <g>
+                                    <path d="M0,0h24v24H0V0z" fill="none"/>
+                                </g>
+                                <g>
+                                    <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </li>
+                </a>
+                <a href="#" id="phoneModify">
+                    <li>
+                        <div class="details">
+                            <p class="un">Phone Number</p>
+                            <p class="deux">{{app.user.phoneNumber}}</p>
+                        </div>
+
+                        <div class="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFF">
+                                <g>
+                                    <path d="M0,0h24v24H0V0z" fill="none"/>
+                                </g>
+                                <g>
+                                    <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </li>
+                </a>
+                <h2>Address</h2>
+                <a href="#">
+                    <li>
+                        <div class="details">
+                            <p class="un">Address</p>
+                            <p class="deux">{{app.user.country}}</p>
+                            <p class="deux">{{app.user.city}}</p>
+                            <p class="deux">{{app.user.postalCode}}</p>
+                            <p class="deux">{{app.user.postalAddress}}</p>
+                        </div>
+
+                        <div class="button">
+                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFF">
+                                <g>
+                                    <path d="M0,0h24v24H0V0z" fill="none"/>
+                                </g>
+                                <g>
+                                    <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                                </g>
+                            </svg>
+                        </div>
+                    </li>
+                </a>
+            </ul>
+            {% endif %}
         </div>
         
 
@@ -81,7 +195,77 @@
                 {% block body %}{% endblock %}
             </div>
         </div>
-        
+        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="overlay_email">
+            <div class="moving-zone">
+                <div class="popup">
+                    <div class="popup-content">
+                        <div class="popup-text">
+                            <div class="close">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#ac0707">
+                                <path d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                </svg>
+                            </div>
+                            <form action="{{ path('modifyEmail') }}" method="post">
+                                <div class="row justify-content-center mb-3 mt-3">
+                                    <div class="col-6 text-align-center mr-1 ">
+                                        <label for="email" class="label text-color-quaternary">Modify Email :</label>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-6">
+                                        <input type="email" name="email" id="email" class="form-control" placeholder="Email address ..." required autofocus>
+                                    </div>
+                                    <div class="col-3 text-align-center ml-1 text-color-primary">
+                                        <button class="btn btn-secondary" type="submit" name="modifyEmailButton">
+                                            Modify
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="overlay_phone">
+            <div class="moving-zone">
+                <div class="popup">
+                    <div class="popup-content">
+                        <div class="popup-text">
+                            <div class="close">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 0 24 24" width="40px" fill="#ac0707">
+                                <path d="M0 0h24v24H0z" fill="none"/>
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                                </svg>
+                            </div>
+                            <form action="{{ path('modifyPhone') }}" method="post">
+                                <div class="row justify-content-center mb-3 mt-3">
+                                    <div class="col-6 text-align-center mr-1 ">
+                                        <label for="phone" class="label text-color-quaternary">Modify phone number :</label>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center">
+                                    <div class="col-6">
+                                        <input type="number" name="phone" id="phone" class="form-control" placeholder="Phone number ..." required autofocus>
+                                    </div>
+                                    <div class="col-3 text-align-center ml-1 text-color-primary">
+                                        <button class="btn btn-secondary" type="submit" name="modifyPhoneButton">
+                                            Modify
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         <script type="text/javascript" src="{{ asset('js/script.js')}}"></script>
         <script type="text/javascript" src="{{ asset('js/scriptResearch.js')}}"></script>
         <script type="text/javascript" src="{{ asset('js/scriptApiGeo.js')}}"></script>

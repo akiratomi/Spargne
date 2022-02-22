@@ -128,7 +128,7 @@ class ProfilController extends AbstractController
     public function modifyMdp(UserPasswordHasherInterface $passwordHasher): Response
     {
         if(isset($_POST['modifyMdpBtn'])){
-            if(count($_POST['password']) == 8){
+            if(strlen($_POST['password']) == 8){
                 $user = $this->getUser();
 
                 $user->setPassword($passwordHasher->hashPassword($user, $_POST['password']));

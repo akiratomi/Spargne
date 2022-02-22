@@ -8,6 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\User;
 use App\Entity\Document;
+use App\Entity\Account;
+use App\Entity\AccountType;
+use App\Entity\Beneficiary;
+
+use App\Form\AccountFormType;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
@@ -118,6 +123,186 @@ class AdvisorController extends AbstractController
         
     }
 
+/* ---------------------------- Customer List ---------------------------- */
+
+    #[Route('/advisor/customerList', name: 'customerList')]
+    public function customerList(): Response
+    {
+        $customerAllList = $this->getDoctrine()->getRepository(User::class)->findByRole('CUSTOMER');
+        $customerList = array();
+        foreach ($customerAllList as $key => $value) {
+            if($value->getAdvisor() == $this->getUser()){
+                array_push($customerList, $value);
+            }
+        }
+
+        return $this->render('advisor/customerList.html.twig', [
+            'customerList' => $customerList,
+        ]);
+    }
+
+    #[Route('/advisor/customer/{id}', name: 'advisorCustomer')]
+    public function customer(int $id, Request $request): Response
+    {
+        $customer = $this->getDoctrine()->getRepository(User::class)->find($id);
+
+        $newAccount = new Account();
+        $formNewAccount = $this->createForm(AccountFormType::class, $newAccount);
+
+        if(isset($_POST['transfertBtn'])){
+            $amount = $_POST["amount"];
+            $numberFrom = $_POST["numberFrom"];
+            $numberTo = $_POST["numberTo"];
+            $typeTo = $_POST["typeTo"];
+
+            $canTryTransact = false;
+            $canTransact = false;
+
+            if($numberFrom != "" && $numberTo != "" && $typeTo != ""){
+                $accountFrom = $this->getDoctrine()->getRepository(Account::class)->findOneBy(array('num'=>$numberFrom));
+                $accountTo = null;
+                if($typeTo == "1"){
+                    $accountTo = $this->getDoctrine()->getRepository(Account::class)->findOneBy(array('num'=>$numberTo));
+                }else if($typeTo == "2"){
+                    $accountTo = $this->getDoctrine()->getRepository(Account::class)->findOneBy(array('iban'=>$numberTo));
+                }
+
+                if( $accountFrom != null && $accountTo != null){
+                    if($accountFrom->getOverdraft() != null){
+                        if( ($accountFrom->getBalance() - $amount) > (0 - $accountFrom->getOverdraft() ) ){
+                            $canTryTransact = true;
+                        }
+                    }else{
+                        if( ($accountFrom->getBalance() - $amount) > 0) {
+                            $canTryTransact = true;
+                        }
+                    }
+
+                    if($canTryTransact){
+                        if($accountTo->getLimitBalance() != null){
+                            $canTransact = true;
+                        }else{
+                            if( ($accountTo->getBalance() + $amount) < $accountTo->getLimitBalance()){
+                                $canTransact = true;
+                            }
+                        }
+
+                        if($canTransact){
+                            $accountFrom->setBalance( $accountFrom->getBalance() - $amount );
+                            $accountTo->setBalance( $accountTo->getBalance() + $amount );
+
+                            $em = $this->getDoctrine()->getManager();
+                            $em->persist($accountFrom);
+                            $em->persist($accountTo);
+                            $em->flush();
+
+                            return $this->redirectToRoute('advisorCustomer', array('id'=>$customer->getId()));
+                        }else{
+                            return $this->render('advisor/customer.html.twig', [
+                                'customer' => $customer,
+                                'formNewAccount' => $formNewAccount->createView(),
+                                'errorTransact' => 'Error : The "destination" selected account limit balance would be overated by this transfert',
+                            ]);
+                        }
+                    }else{
+                        return $this->render('advisor/customer.html.twig', [
+                            'customer' => $customer,
+                            'formNewAccount' => $formNewAccount->createView(),
+                            'errorTransact' => 'Error : The "from" selected account hasn\'t enough balance to complet transfert',
+                        ]);
+                    }
+                }else{
+                    return $this->render('advisor/customer.html.twig', [
+                        'customer' => $customer,
+                        'formNewAccount' => $formNewAccount->createView(),
+                        'errorTransact' => 'Error : An error occured please try later',
+                    ]);
+                }
+            }else{
+                return $this->render('advisor/customer.html.twig', [
+                    'customer' => $customer,
+                    'formNewAccount' => $formNewAccount->createView(),
+                    'errorTransact' => 'Error : Please select all field to complet transfert',
+                ]);
+            }
+
+            
+        }
+
+        if ($request->isMethod('POST')) { 
+            $formNewAccount->handleRequest($request); 
+            if ($formNewAccount->isSubmitted() && $formNewAccount->isValid()) {
+
+                $newAccount->setOwner($customer);
+
+                $num = $this->generateUID(10);
+                $test_num = $this->getDoctrine()->getRepository(Account::class)->findOneBy(array('num'=>$num));
+                while($test_num != null){
+                    $num = $this->generateUID(10);
+                    $test_num = $this->getDoctrine()->getRepository(Account::class)->findOneBy(array('num'=>$num));
+                }
+                $newAccount->setNum($num);
+
+                $iban = substr($customer->getCountry(), 0, 2);
+                $iban = $iban."11";
+                $iban = $iban.$num;
+                $newAccount->setIban($iban);
+                $newAccount->setBalance(0);
+                $newAccount->setCreationDate(new \DateTime(date('now')));
+                $newAccount->setLimitBalance($newAccount->getType()->getLimitBalance());
+                $newAccount->setOverdraft($newAccount->getType()->getOverdraft());
+                $newAccount->setRate($newAccount->getType()->getRate());
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($newAccount);
+                $em->flush();
+
+                return $this->redirectToRoute('advisorCustomer', array('id'=>$customer->getId()));
+            }
+
+        }
+
+        if(isset($_POST['beneficiaryAddBtn'])){
+            $newBeneficiary = new Beneficiary();
+            $test_acc = $this->getDoctrine()->getRepository(Account::class)->findOneBy(array('iban'=>$_POST['iban']));
+            if($test_acc != null){
+                $newBeneficiary->setAddedDate(new \DateTime(date('now')));
+                $newBeneficiary->setOwner($customer);
+                $newBeneficiary->setAccount($test_acc);
+                $test_name = $this->getDoctrine()->getRepository(Beneficiary::class)->findOneBy(array('name'=>$_POST['name'], 'owner'=>$customer));
+                if($test_name != null){
+                    $newBeneficiary->setName($_POST['name']);
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($newBeneficiary);
+                    $em->flush();
+
+                    return $this->redirectToRoute('advisorCustomer', array('id'=>$customer->getId()));
+                }else{
+                    return $this->render('advisor/customer.html.twig', [
+                        'customer' => $customer,
+                        'formNewAccount' => $formNewAccount->createView(),
+                        'error' => 'That beneficiary name albready exist',
+                    ]);
+                }
+                
+
+            }else{
+                return $this->render('advisor/customer.html.twig', [
+                    'customer' => $customer,
+                    'formNewAccount' => $formNewAccount->createView(),
+                    'error' => 'No account found for this iban',
+                ]);
+            }
+        }
+
+        
+
+        return $this->render('advisor/customer.html.twig', [
+            'customer' => $customer,
+            'formNewAccount' => $formNewAccount->createView(),
+        ]);
+    }
 /* ---------------------------- Functions ---------------------------- */
 
     public function generateHtml($body)
@@ -137,5 +322,17 @@ class AdvisorController extends AbstractController
             ';
 
         return($html);
+    }
+
+    public function generateUID($length)
+    {
+        $chars = '0123456789';
+        $chars_length = strlen($chars);
+        $uid = '';
+        for ($i = 0; $i < $length; $i++)
+        {
+            $uid .= $chars[rand(0, $chars_length - 1)];
+        }
+        return $uid;
     }
 }

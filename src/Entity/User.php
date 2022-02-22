@@ -148,10 +148,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $firstMdp;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Account::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private $accounts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Beneficiary::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private $beneficiaries;
+
     public function __construct()
     {
         $this->customers = new ArrayCollection();
         $this->modifyProfils = new ArrayCollection();
+        $this->accounts = new ArrayCollection();
+        $this->beneficiaries = new ArrayCollection();
     }
 
 
@@ -478,6 +490,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstMdp(bool $firstMdp): self
     {
         $this->firstMdp = $firstMdp;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Account[]
+     */
+    public function getAccounts(): Collection
+    {
+        return $this->accounts;
+    }
+
+    public function addAccount(Account $account): self
+    {
+        if (!$this->accounts->contains($account)) {
+            $this->accounts[] = $account;
+            $account->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAccount(Account $account): self
+    {
+        if ($this->accounts->removeElement($account)) {
+            // set the owning side to null (unless already changed)
+            if ($account->getOwner() === $this) {
+                $account->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Beneficiary[]
+     */
+    public function getBeneficiaries(): Collection
+    {
+        return $this->beneficiaries;
+    }
+
+    public function addBeneficiary(Beneficiary $beneficiary): self
+    {
+        if (!$this->beneficiaries->contains($beneficiary)) {
+            $this->beneficiaries[] = $beneficiary;
+            $beneficiary->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBeneficiary(Beneficiary $beneficiary): self
+    {
+        if ($this->beneficiaries->removeElement($beneficiary)) {
+            // set the owning side to null (unless already changed)
+            if ($beneficiary->getOwner() === $this) {
+                $beneficiary->setOwner(null);
+            }
+        }
 
         return $this;
     }

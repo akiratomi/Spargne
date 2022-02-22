@@ -73,7 +73,7 @@ class SecurityController extends AbstractController
                     $password = $this->generatePassword(8);
 
                     $user->setPassword($passwordHasher->hashPassword($user,$password));
-                    
+                    $user->setFirstMdp(true);
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($user);
                     $em->flush();
@@ -102,7 +102,7 @@ class SecurityController extends AbstractController
 
                     return $this->render('security/forgottenPassword.html.twig', [
                         'controller_name' => 'ProfilController',
-                        'error' => 'Your email has been re-generated. An email has been sent to your email address.',
+                        'error' => 'Your password has been re-generated. An email has been sent to your email address.',
                     ]);
                 }else{
                     return $this->render('security/forgottenPassword.html.twig', [

@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdvisorController!{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <h2 class="text-align-center text-color-primary">Customers</h2>
+            
+            <div class="table-responsive mt-2">
+                <table class="table table-hover">
+                    <thead class="text-size-12">
+                        <tr class="table-color-primary th-quaternary">
+                            <th>Name</th>
+                            <th>First Name</th>
+                            <th>Email</th>
+                            <th>Address</th>
+                            <th>Phone number</th>
+                            <th>Register date</th>
+                            <th>Show</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-size-12 text-bold ">
+                        {% for customer in customerList %}
+                            <tr class="td-quaternary {{ cycle(['table-color-primary-7', 'table-color-primary-6'], loop.index0) }} researchElementLine">
+                                <td class="text-align-center researchElement1">{{customer.name}}</td>
+                                <td class="text-align-center ">{{customer.firstName}}</td>
+                                <td class="text-align-center">{{customer.email}}</td>
+                                <td class="text-align-center">{{customer.postalAddress}}<br>{{customer.postalCode}}<br>{{customer.city}}<br>{{customer.country}}</td>
+                                <td class="text-align-center">{{customer.phoneNumber}}</td>
+                                <td class="text-align-center">{{customer.registerDate | date('d-m-Y')}}</td>
+                                <td class="text-align-center">
+                                <a href="{{path('advisorCustomer', {'id':customer.id})}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#d8c788">
+                                        <g>
+                                            <rect fill="none" height="24" width="24"/>
+                                        </g>
+                                        <g>
+                                            <g>
+                                                <polygon points="15.5,5 11,5 16,12 11,19 15.5,19 20.5,12"/>
+                                                <polygon points="8.5,5 4,5 9,12 4,19 8.5,19 13.5,12"/>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        
+    </div>
+{% endblock %}

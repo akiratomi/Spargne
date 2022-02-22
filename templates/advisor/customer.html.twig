@@ -1,0 +1,398 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdvisorController!{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col-6">
+            <h2 class="text-align-center text-color-primary text-size-30 mb-4">{{customer.name}} {{customer.firstName}} profil</h2>
+            
+            
+        </div>
+    </div>
+
+    <div class="navAccount">
+        <ul class="navAccount_ul">
+            <li class="navAccount_selected">Home</li>
+            <li>Account</li>
+            <li>Transferts</li>
+            <li>Card</li>
+            <li>More</li>
+        </ul>
+    </div>
+
+    <div id="Home"> <!-- ################## Home ################## -->
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <h2 class="text-align-center text-color-primary text-size-30 mb-4">Home</h2>
+            </div>
+        </div>
+    </div>
+
+    <div id="Account"> <!-- ################## Account ################## -->
+        <div class="row justify-content-center">
+            <div class="col-10">
+
+                <div class="row justify-content-center mb-5">
+                    <div class="col-6"> 
+                        <h3 class="text-color-primary account_section">Current account</h3>
+                        {% set nbSavingAccount = 0 %}
+                        {% for account in customer.accounts %}  
+                            {% if account.type.name == "Current" %}
+                                <div class="account">
+                                    <div class="row">
+                                        <div class="col-6 text-align-left text-color-primary text-size-20">ACC {{loop.index - nbSavingAccount}}</div>
+                                        {% if account.balance < 0 %}
+                                            <div class="col-6 text-align-right text-color-danger text-size-20">- {{account.balance}}</div>
+                                        {% else %}
+                                            <div class="col-6 text-align-right text-color-primary text-size-20">+ {{account.balance}}</div>
+                                        {% endif %}
+                                    </div>
+                                    <p class="text-color-primary5 mb-2">*****{{account.num[6:10]}}</p>
+                                    <p class="text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</p>
+
+                                </div>
+                            {% else %}
+                            {% set nbSavingAccount = nbSavingAccount + 1 %}
+                            {% endif %}
+                        {% endfor %}  
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-6"> 
+                        <h3 class="text-color-primary account_section">Savings account</h3>
+
+                        {% for account in customer.accounts %}  
+                            {% if account.type.name == "Saving" %}
+                                <div class="account">
+                                    <div class="row">
+                                        <div class="col-6 text-align-left text-color-primary text-size-20">Saving {{loop.index - nbSavingAccount}}</div>
+                                        {% if account.balance < 0 %}
+                                            <div class="col-6 text-align-right text-color-danger text-size-20">- {{account.balance}}</div>
+                                        {% else %}
+                                            <div class="col-6 text-align-right text-color-primary text-size-20">+ {{account.balance}}</div>
+                                        {% endif %}
+                                    </div>
+                                    <p class="text-color-primary5 mb-2">*****{{account.num[6:10]}}</p>
+                                    <p class="text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</p>
+
+                                </div>
+                            {% endif %}
+                        {% endfor %}  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="Transferts"> <!-- ################## Transferts ################## -->
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <form action="{{ path('advisorCustomer', {'id':customer.id}) }}" method="post">
+                    <div class="row justify-content-center">
+                        <div class="col-8">
+                            <div class="amountTransfert">
+                                <p class="label text-align-center">Transfert amount</p>
+                                <div class="amount row">
+                                    <input type="number" name="amount" id="amount" class="col-6 text-align-right" placeholder="00,00" step="0.01" required autofocus>
+                                    <div class="euroLogo col-6 text-color-primary5">€</div>
+                                </div>
+                                <input type="hidden" name="numberFrom" class="numFrom" required>
+                                <input type="hidden" name="numberTo" class="numTo" required>
+                                <input type="hidden" name="typeTo" class="typeTo">
+
+                                <div class="row justify-content-center mt-6">
+                                    <div class="col-6">
+                                        <div id="accountSelector">
+                                            <div class="accountSelected">
+                                                <div class="nameAccount text-color-primary text-size-16 text-bold">From account</div>
+                                                <div class="balanceAccount text-color-primary text-bold text-size-16"></div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#113f59">
+                                                    <g>
+                                                        <path d="M0,0h24v24H0V0z" fill="none"/>
+                                                    </g>
+                                                    <g>
+                                                        <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                                                    </g>
+                                                </svg>  
+                                            </div>
+
+                                            <div id="accountList">
+                                                <h3 class="text-color-primary account_sectionSelectorList">Current account</h3>
+                                                {% for account in customer.accounts %}  
+                                                    {% if account.type.name == "Current" %}
+                                                        <div class="accountSelectorList fromList">
+                                                            <div class="row">
+                                                                <div class="col-6 text-align-left text-color-primary nom">ACC {{loop.index}}</div>
+                                                                {% if account.balance < 0 %}
+                                                                    <div class="col-6 text-align-right text-color-danger bal">- {{account.balance}}</div>
+                                                                {% else %}
+                                                                    <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}}</div>
+                                                                {% endif %}
+                                                            </div>
+                                                            <h3 class="num text-color-primary5 mb-1">{{account.num}}</h3>
+                                                            <h3 class="owned text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</h3>
+
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}  
+                                                <h3 class="text-color-primary account_sectionSelectorList">Savings account</h3>
+
+                                                {% for account in customer.accounts %}  
+                                                    {% if account.type.name == "Saving" %}
+                                                        <div class="accountSelectorList fromList">
+                                                            <div class="row">
+                                                                <div class="col-6 text-align-left text-color-primary nom">Saving {{loop.index}}</div>
+                                                                {% if account.balance < 0 %}
+                                                                    <div class="col-6 text-align-right text-color-danger bal">- {{account.balance}}</div>
+                                                                {% else %}
+                                                                    <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}}</div>
+                                                                {% endif %}
+                                                            </div>
+                                                            <h3 class="num text-color-primary5 mb-1">{{account.num}}</h3>
+                                                            <h3 class="owned text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</h3>
+
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}  
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center mt-6">
+                                    <div class="col-6">
+                                        <div id="beneficiarySelector">
+                                            <div class="beneficairySelected">
+                                                <div class="nameBeneficiary text-color-primary text-bold text-size-16">Select destinate account</div>
+                                                <div class="ibanBeneficiary text-color-primary text-bold text-size-16"></div>
+                                                <div class="numBeneficiary text-color-primary text-bold text-size-16"></div>
+                                                <div class="balanceBeneficiary text-color-primary text-bold text-size-16"></div>
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#113f59">
+                                                    <g>
+                                                        <path d="M0,0h24v24H0V0z" fill="none"/>
+                                                    </g>
+                                                    <g>
+                                                        <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                                                    </g>
+                                                </svg>    
+                                            </div>
+
+                                            <div id="beneficiaryList">
+                                                <div class="nav_to">
+                                                    <ul class="nav_to_ul">
+                                                        <li class="nav_to_selected">Owns</li>
+                                                        <li>Beneficiaries</li>
+                                                    </ul>
+                                                </div>
+                                                <div id="Owns" class="customerAccount">
+                                                    <h3 class="text-color-primary account_sectionSelectorList">Current account</h3>
+                                                    {% for account in customer.accounts %}  
+                                                        {% if account.type.name == "Current" %}
+                                                            <div class="accountSelectorList toOwnList">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-align-left text-color-primary nom">ACC {{loop.index}}</div>
+                                                                    {% if account.balance < 0 %}
+                                                                        <div class="col-6 text-align-right text-color-danger bal">- {{account.balance}}</div>
+                                                                    {% else %}
+                                                                        <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}}</div>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <h3 class="num text-color-primary5 mb-1">{{account.num}}</h3>
+                                                                <h3 class="owned text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</h3>
+
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}  
+                                                    <h3 class="text-color-primary account_sectionSelectorList">Savings account</h3>
+
+                                                    {% for account in customer.accounts %}  
+                                                        {% if account.type.name == "Saving" %}
+                                                            <div class="accountSelectorList toOwnList">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-align-left text-color-primary nom">Saving {{loop.index}}</div>
+                                                                    {% if account.balance < 0 %}
+                                                                        <div class="col-6 text-align-right text-color-danger bal">- {{account.balance}}</div>
+                                                                    {% else %}
+                                                                        <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}}</div>
+                                                                    {% endif %}
+                                                                </div>
+                                                                <h3 class="num text-color-primary5 mb-1">{{account.num}}</h3>
+                                                                <h3 class="owned text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</h3>
+
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}  
+                                                </div> 
+
+                                                <div id="Beneficiaries" class="beneficiaryAccount">
+                                                    <h3 class="account_sectionSelectorList"></h3>
+                                                    {% for beneficiary in customer.beneficiaries %} 
+                                                        {% if beneficiary.account.type.name == "Current" %}
+                                                            <div class="accountSelectorList toBeneficiaryList">
+                                                                <div class="row">
+                                                                    <div class="col-6 text-align-left text-color-primary nom">{{beneficiary.name}}</div>
+                                                                    <div class="col-6 text-align-right text-color-danger iban">{{beneficiary.account.iban}}</div>
+                                                                </div>
+                                                                <h3 class="owned text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</h3>
+
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}  
+                                                </div> 
+
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row justify-content-center text-align-center mt-6">
+                                    <div class="col-6">
+                                        <button class="btn btn-secondary" type="submit" name="transfertBtn">
+                                            Tranfert
+                                        </button>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                        <div class="col-4">
+                        </div>
+
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="Card"> <!-- ################## Card ################## -->
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <h2 class="text-align-center text-color-primary text-size-30 mb-4">Card</h2>
+            </div>
+        </div>
+    </div>
+
+    <div id="More"> <!-- ################## More ################## -->
+        <div class="row justify-content-center">
+            <div class="col-10">
+                <div class="row justify-content-center">
+                    <div class="col-6">
+                        <div class="sectionMoreForm">
+                                <h2>Add a new account</h2>
+                                {{ form_start(formNewAccount) }}
+                                <div class="row justify-content-center">
+                                    <div class="col-3 text-align-right mr-2">
+                                        {{form_label(formNewAccount.type, 'Account type :', {'label_attr':{'class':'label'}} )}}
+                                    </div>
+                                    <div class="col-3 mb-2 mr-2">
+                                        {{form_widget(formNewAccount.type, {'attr':{'class':'form-control  '}})}}
+                                    </div>
+                                    <div class="col-3 ml-2">
+                                        {{form_widget(formNewAccount.Create, {'attr':{'class':'btn btn-secondary'}})}}
+                                    </div>
+                                </div>
+                                {{form_end(formNewAccount, {render_rest: true})}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center mt-3">
+                    <div class="col-6">
+                        <div class="sectionMoreForm">
+                        
+                                <h2>Add a beneficiary</h2>
+                                <form action="{{ path('advisorCustomer', {'id':customer.id}) }}" method="post">
+                                    <div class="row justify-content-center">
+                                        <div class="col-5 text-align-right mr-2">
+                                            <label for="name" class="label">New beneficiary name :</label>
+                                        </div>
+                                        <div class="col-5 mb-2 mr-2">
+                                            <input type="text" name="name" id="name" class="form-control" placeholder="Name ..." required autofocus>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-5 text-align-right mr-2">
+                                            <label for="iban" class="label">New beneficiary's IBAN :</label>
+                                        </div>
+                                        <div class="col-5 mb-2 mr-2">
+                                            <input type="text" name="iban" id="iban" class="form-control" placeholder="IBAN ..." required autofocus>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center text-align-center">
+                                        <div class="col-12 ml-2 mb-2">
+                                            <button class="btn btn-secondary" type="submit" name="beneficiaryAddBtn">
+                                                Add
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {% if error is defined %}
+                                        <div class="row justify-content-center">
+                                            <div class="col">
+                                                <h1 class="text-color-quinary text-align-center">Please enter a valid address</h1>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </form>
+        
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center mt-3">
+                <h1 class="text-align-center text-color-primary">Beneficiaries list</h1>
+                    <div class="col-6">
+                        <div class="table-responsive mt-2">
+                            <table class="table table-hover">
+                                <thead class="text-size-12 headBeneficiary">
+                                    <tr class="table-color-primary th-primary">
+                                        <th>Name</th>
+                                        <th>IBAN</th>
+                                        <th>Owner</th>
+                                        <th>Added date</th>
+                                        <th>Remove</th>
+                                        <th id="iconOpen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 0 24 24" width="50px" fill="#FFFF">
+                                                <path d="M0 0h24v24H0V0z" fill="none"/>
+                                                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                            </svg>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-size-12 text-bold bodyBeneficiary">
+                                    {% for beneficiary in customer.beneficiaries %}
+                                            <tr class="td-primary {{ cycle(['table-color-tertiary', 'table-color-tertiary'], loop.index0) }}">
+                                                <td class="text-align-center">{{ beneficiary.name }}</td>
+                                                <td class="text-align-center">{{ beneficiary.account.iban[0:2] | upper }} {{ beneficiary.account.iban[2:2] }} {{ beneficiary.account.iban[4:16] }}</td>
+                                                <td class="text-align-center">{{ beneficiary.account.owner.name}} {{ beneficiary.account.owner.firstName}}</td>
+                                                <td class="text-align-center">{{ beneficiary.addedDate | date('d-m-Y') }}</td>
+                                                <td class="text-align-center"><a href="{{path('personnelHireAdvisorDelete', {'id':beneficiary.id})}}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#cfa200">
+                                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+                                                    </svg></a>
+                                                </td>
+                                            </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-6">
+    </div>
+
+    <script type="text/javascript" src="{{ asset('js/scriptNavCustomer.js')}}"></script>
+
+{% endblock %}

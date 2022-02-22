@@ -1,60 +1,308 @@
-.customerDocumentCard {
-    background-color: var(--primary);
-    border-radius: 5px;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.customerDocumentCard .title {
-    width: 100%;
-}
-
-.customerDocumentCard .leftButton {
-    background-color: var(--secondary);
-    width: 50%;
-    border-bottom-left-radius: 5px;
-    color: var(--quaternary);
-    text-decoration: none;
-}
-
-.customerDocumentCard .rightButton {
-    background-color: var(--danger);
-    width: 50%;
-    border-bottom-right-radius: 5px;
-    color: var(--quaternary);
-    text-decoration: none;
-}
-
-.customerDocumentCard .centerButton {
-    background-color: var(--warning);
-    width: 100%;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    color: var(--quaternary);
-    text-decoration: none;
-}
-
-.numPassWord {
-    border: 2px solid black;
-    border-radius: 50px;
-    color: black;
-    font-weight: bold;
-    width: 50px;
-    height: 50px;
-    font-size: 30px;
-    text-align: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 200ms;
-}
-
-.numPassWord:hover {
-    border: 2px solid var(--primary);
-    color: var(--primary);
-}
-
-.numPassWord p {
-    position: relative;
-    top: 2px;
-    right: 1px;
-}
+    .customerDocumentCard {
+        background-color: var(--primary);
+        border-radius: 5px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .customerDocumentCard .title {
+        width: 100%;
+    }
+    
+    .customerDocumentCard .leftButton {
+        background-color: var(--secondary);
+        width: 50%;
+        border-bottom-left-radius: 5px;
+        color: var(--quaternary);
+        text-decoration: none;
+    }
+    
+    .customerDocumentCard .rightButton {
+        background-color: var(--danger);
+        width: 50%;
+        border-bottom-right-radius: 5px;
+        color: var(--quaternary);
+        text-decoration: none;
+    }
+    
+    .customerDocumentCard .centerButton {
+        background-color: var(--warning);
+        width: 100%;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        color: var(--quaternary);
+        text-decoration: none;
+    }
+    
+    .numPassWord {
+        border: 2px solid black;
+        border-radius: 50px;
+        color: black;
+        font-weight: bold;
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        text-align: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 200ms;
+    }
+    
+    .numPassWord:hover {
+        border: 2px solid var(--primary);
+        color: var(--primary);
+    }
+    
+    .numPassWord p {
+        position: relative;
+        top: 2px;
+        right: 1px;
+    }
+    
+    .homePageLogo {
+        position: relative;
+        top: 10px;
+        height: 50px;
+    }
+    
+    .backGroundLogo {
+        position: absolute;
+        top: 45%;
+        left: 45%;
+        width: 10%;
+        z-index: -10000;
+        opacity: 5%;
+    }
+    
+    .navAccount {
+        width: 80%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .navAccount .navAccount_ul {
+        padding: 0;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        list-style-type: none;
+        justify-content: center;
+        text-align: center;
+        border-bottom: 1px solid var(--primary-1);
+    }
+    
+    .navAccount .navAccount_ul li {
+        color: var(--primary);
+        width: 150px;
+        border-left: 1px solid var(--primary-1);
+        border-right: 1px solid var(--primary-1);
+        padding-bottom: 10px;
+        padding-top: 10px;
+        cursor: pointer;
+    }
+    
+    .navAccount_selected {
+        border-bottom: 6px solid var(--quinary);
+    }
+    
+    .sectionMoreForm {
+        padding-top: 40px;
+        border: 1px solid var(--primary);
+        border-radius: 10px;
+        display: block;
+        position: relative;
+    }
+    
+    .sectionMoreForm h2 {
+        color: var(--primary);
+        position: absolute;
+        top: -15px;
+        left: 25px;
+        padding-left: 5px;
+        padding-right: 5px;
+        background-color: var(--quaternary);
+    }
+    
+    .account {
+        margin-top: 20px;
+        background-color: var(--quaternary);
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        padding-left: 50px;
+        padding-right: 50px;
+        -webkit-box-shadow: 3px 3px 9px 1px var(--primary-5);
+        box-shadow: 3px 3px 9px 1px var(--primary-5);
+        cursor: pointer;
+        transition: all 200ms;
+    }
+    
+    .account:hover {
+        -webkit-box-shadow: 3px 3px 9px 1px var(--primary-7);
+        box-shadow: 3px 3px 9px 1px var(--primary-7);
+    }
+    
+    .account_section {
+        border-bottom: 1px solid var(--primary-5);
+        padding-bottom: 10px;
+    }
+    
+    .amountTransfert p {
+        font-weight: bold;
+        font-size: 50px;
+    }
+    
+    .amountTransfert .amount input {
+        font-weight: bold;
+        font-size: 50px;
+        border: none;
+        background: var(--quaternary);
+        -moz-appearance: textfield;
+        outline: none
+    }
+    
+    .amountTransfert .amount input:focus {
+        border: none;
+        outline: none;
+        background: var(--quaternary);
+    }
+    
+    .amountTransfert .amount .euroLogo {
+        font-weight: bold;
+        font-size: 50px;
+    }
+    
+    .accountSelected {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        font-size: 10px;
+        justify-content: space-between;
+        background-color: var(--quaternary);
+        -webkit-box-shadow: 3px 3px 9px 1px var(--primary-5);
+        box-shadow: 3px 3px 9px 1px var(--primary-5);
+    }
+    
+    .accountSelected:hover {
+        -webkit-box-shadow: 3px 3px 9px 1px var(--primary-7);
+        box-shadow: 3px 3px 9px 1px var(--primary-7);
+    }
+    
+    .beneficairySelected {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+        font-size: 10px;
+        justify-content: space-between;
+        background-color: var(--quaternary);
+        -webkit-box-shadow: 3px 3px 9px 1px var(--primary-5);
+        box-shadow: 3px 3px 9px 1px var(--primary-5);
+    }
+    
+    .beneficairySelected:hover {
+        -webkit-box-shadow: 3px 3px 9px 1px var(--primary-7);
+        box-shadow: 3px 3px 9px 1px var(--primary-7);
+    }
+    
+    #accountSelector {
+        position: relative;
+    }
+    
+    #beneficiarySelector {
+        position: relative;
+    }
+    
+    #accountSelector #accountList {
+        position: absolute;
+        right: -50vw;
+        top: -40vh;
+        background-color: var(--primary-4);
+        width: 50vw;
+        padding: 50px;
+    }
+    
+    #beneficiarySelector #beneficiaryList {
+        position: absolute;
+        right: -50vw;
+        top: -50vh;
+        background-color: var(--primary-4);
+        width: 50vw;
+        padding: 50px;
+    }
+    
+    .accountSelectorList {
+        font-size: 15px;
+        margin-top: 20px;
+        background-color: var(--quaternary);
+        margin-bottom: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        padding-left: 50px;
+        padding-right: 50px;
+        -webkit-box-shadow: 3px 3px 9px 1px var(--primary-5);
+        box-shadow: 3px 3px 9px 1px var(--primary-5);
+        cursor: pointer;
+        transition: all 200ms;
+    }
+    
+    .accountSelectorList:hover {
+        -webkit-box-shadow: 3px 3px 9px 1px var(--primary);
+        box-shadow: 3px 3px 9px 1px var(--primary);
+    }
+    
+    .account_sectionSelectorList {
+        border-bottom: 1px solid var(--primary-5);
+        padding-bottom: 10px;
+        font-size: large;
+        color: var(--quetrnary);
+    }
+    
+    .nav_to {
+        width: 80%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav_to .nav_to_ul {
+        padding: 0;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        list-style-type: none;
+        justify-content: center;
+        text-align: center;
+        border-bottom: 1px solid var(--primary-1);
+    }
+    
+    .nav_to .nav_to_ul li {
+        color: var(--quaternary);
+        background-color: var(--quinary-4);
+        font-weight: bold;
+        font-size: 20px;
+        width: 300px;
+        border-left: 1px solid var(--primary-1);
+        border-right: 1px solid var(--primary-1);
+        padding-bottom: 10px;
+        padding-top: 10px;
+        cursor: pointer;
+    }
+    
+    .nav_to_selected {
+        border-bottom: 6px solid var(--quinary);
+    }
+    /* Chrome, Safari, Edge, Opera */
+    
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    /* Firefox */
+    
+    input[type=number] {
+        -moz-appearance: textfield;
+    }

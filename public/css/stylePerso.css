@@ -306,3 +306,107 @@
     input[type=number] {
         -moz-appearance: textfield;
     }
+    
+    .enteteTransaction {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding-left: 100px;
+        padding-right: 100px;
+        padding-top: 50px;
+        padding-bottom: 50px;
+        background-color: var(--primary-1);
+        -webkit-box-shadow: inset 5px 5px 15px 5px rgba(0, 0, 0, 0.32);
+        box-shadow: inset 5px 5px 15px 5px rgba(0, 0, 0, 0.32);
+    }
+    
+    .enteteTransactionPart1 {
+        flex-grow: 3;
+        border-right: 3px solid var(--primary);
+        margin-right: 100px;
+    }
+    
+    .enteteTransactionPart2 {
+        flex-grow: 1;
+        vertical-align: middle;
+    }
+    
+    .enteteTransactionPart2 .tdLeft {
+        text-align: left;
+        vertical-align: middle;
+    }
+    
+    .enteteTransactionPart2 .tdRight {
+        text-align: right;
+        vertical-align: middle;
+    }
+    
+    .enteteTransactionPart2 .tableEntete {
+        position: relative;
+        top: 20px;
+        width: 100%;
+        vertical-align: bottom;
+        color: var(--primary);
+    }
+    
+    .transaction {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        border-bottom: 1px solid var(--primary);
+        vertical-align: middle;
+    }
+    
+    .transactionName1 {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background-color: var(--primary);
+        border-radius: 100px;
+        vertical-align: middle;
+        color: var(--quaternary);
+        font-weight: bold;
+    }
+    
+    .transactionName2 {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background-color: var(--secondary);
+        border-radius: 100px;
+        vertical-align: middle;
+        color: var(--quaternary);
+        font-weight: bold;
+    }
+    
+    .transactionName3 {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background-color: var(--quinary);
+        border-radius: 100px;
+        vertical-align: middle;
+        color: var(--secondary);
+        font-weight: bold;
+    }
+    
+    .transactionRightMenu {
+        list-style: none;
+        color: var(--primary);
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .transactionRightMenu li {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 10px;
+        border: 1px solid var(--primary);
+        border-radius: 10px;
+    }
+    
+    .transactionAmount {}

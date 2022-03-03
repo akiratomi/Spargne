@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdvisorController!{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <div class="col">
+            <div class="enteteTransaction">
+                <div class="enteteTransactionPart1">
+                    <h2 class="text-align-center text-color-primary text-size-30 mb-4">{{account.type.name}} account</h2>
+                    <h3 class="text-align-center text-color-primary text-size-20 mb-2">{{account.num}} ouvert le {{account.creationDate|date('d-m-Y')}}</h3>
+                </div>
+
+                <div class="enteteTransactionPart2">
+                     <table class="tableEntete">
+                        <tbody >
+                            <tr>
+                                <td class="tdLeft">Owner</td>
+                                <td class="tdRight">{{account.owner.name | upper}} {{account.owner.firstName | upper}}</td>
+                            </tr>
+                            <tr>
+                                <td class="tdLeft">Overdraft</td>
+                                <td class="tdRight">- {{account.overdraft}} €</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="row justify-content-center mt-6">
+        <div class="col-6">
+                {% for transfert in transferts %}
+                    {% if transfert.fromAccount == account %}
+                        <div class="transaction">
+                            {% set foo = random(1,3) %}
+                            {% if foo == 1 %}
+                                <div class="transactionName1 text-color-primary transactionDate ml-2 mr-2"><p>{{transfert.destinationAccount.owner.name[0:1]}} {{transfert.destinationAccount.owner.firstName[0:1]}}</p></div>
+                            {% elseif foo == 2 %}
+                                <div class="transactionName2 text-color-primary transactionDate ml-2 mr-2"><p>{{transfert.destinationAccount.owner.name[0:1]}} {{transfert.destinationAccount.owner.firstName[0:1]}}</p></div>
+                            {% elseif foo == 3 %}
+                                <div class="transactionName3 text-color-primary transactionDate ml-2 mr-2"><p>{{transfert.destinationAccount.owner.name[0:1]}} {{transfert.destinationAccount.owner.firstName[0:1]}}</p></div>
+                            {% endif %}
+                            <div class="text-color-primary transactionDate ml-2 mr-2">Transaction date <br> {{transfert.date |date('d-m-Y') }}</div>
+                            <div class="text-color-primary transactionAccount ml-2 mr-2">Account destinate <br> num : {{transfert.destinationAccount.num}}</div>
+                            <div class="text-color-danger transactionAmount ml-2 mr-2">- {{transfert.amount}} €</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#113f59">
+                                <g>
+                                    <path d="M0,0h24v24H0V0z" fill="none"/>
+                                </g>
+                                <g>
+                                    <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                                </g>
+                            </svg>  
+                        </div>
+                    {% else %}
+
+                        <div class="transaction">
+                            {% set foo = random(1,3) %}
+                            {% if foo == 1 %}
+                                <div class="transactionName1 text-color-primary transactionDate ml-2 mr-2">{{transfert.destinationAccount.owner.name[0:1]}} {{transfert.destinationAccount.owner.firstName[0:1]}}</div>
+                            {% elseif foo == 2 %}
+                                <div class="transactionName2 text-color-primary transactionDate ml-2 mr-2">{{transfert.destinationAccount.owner.name[0:1]}} {{transfert.destinationAccount.owner.firstName[0:1]}}</div>
+                            {% elseif foo == 3 %}
+                                <div class="transactionName3 text-color-primary transactionDate ml-2 mr-2">{{transfert.destinationAccount.owner.name[0:1]}} {{transfert.destinationAccount.owner.firstName[0:1]}}</div>
+                            {% endif %}
+                            <div class="text-color-primary transactionDate ml-2 mr-2">Transaction date <br> {{transfert.date |date('d-m-Y') }}</div>
+                            <div class="text-color-primary transactionAccount ml-2 mr-2">Account from <br> num : {{transfert.fromAccount.num}}</div>
+                            <div class=" text-color-success transactionAmount ml-2 mr-2">+ {{transfert.amount}} €</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#113f59">
+                                <g>
+                                    <path d="M0,0h24v24H0V0z" fill="none"/>
+                                </g>
+                                <g>
+                                    <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                                </g>
+                            </svg>  
+                        </div>
+                    {% endif %}
+                {% endfor %}
+        </div>
+        <div class="col-3 mt-6">
+            <ul class="transactionRightMenu">
+                <li>
+                    <p>Generate bank account details</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#113f59">
+                        <g>
+                            <path d="M0,0h24v24H0V0z" fill="none"/>
+                        </g>
+                        <g>
+                            <polygon points="6.23,20.23 8,22 18,12 8,2 6.23,3.77 14.46,12"/>
+                        </g>
+                    </svg>
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

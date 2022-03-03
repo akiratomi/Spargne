@@ -71,9 +71,21 @@ class Account
      */
     private $beneficiaries;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Transferts::class, mappedBy="fromAccount")
+     */
+    private $transfertsOut;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transferts::class, mappedBy="destinationAccount")
+     */
+    private $transfertsIn;
+
     public function __construct()
     {
         $this->beneficiaries = new ArrayCollection();
+        $this->transfertsOut = new ArrayCollection();
+        $this->transfertsIn = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -213,6 +225,66 @@ class Account
             // set the owning side to null (unless already changed)
             if ($beneficiary->getAccount() === $this) {
                 $beneficiary->setAccount(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transferts[]
+     */
+    public function getTransfertsOut(): Collection
+    {
+        return $this->transfertsOut;
+    }
+
+    public function addTransfertsOut(Transferts $transfertsOut): self
+    {
+        if (!$this->transfertsOut->contains($transfertsOut)) {
+            $this->transfertsOut[] = $transfertsOut;
+            $transfertsOut->setFromAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransfertsOut(Transferts $transfertsOut): self
+    {
+        if ($this->transfertsOut->removeElement($transfertsOut)) {
+            // set the owning side to null (unless already changed)
+            if ($transfertsOut->getFromAccount() === $this) {
+                $transfertsOut->setFromAccount(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Transferts[]
+     */
+    public function getTransfertsIn(): Collection
+    {
+        return $this->transfertsIn;
+    }
+
+    public function addTransfertsIn(Transferts $transfertsIn): self
+    {
+        if (!$this->transfertsIn->contains($transfertsIn)) {
+            $this->transfertsIn[] = $transfertsIn;
+            $transfertsIn->setDestinationAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransfertsIn(Transferts $transfertsIn): self
+    {
+        if ($this->transfertsIn->removeElement($transfertsIn)) {
+            // set the owning side to null (unless already changed)
+            if ($transfertsIn->getDestinationAccount() === $this) {
+                $transfertsIn->setDestinationAccount(null);
             }
         }
 

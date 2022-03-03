@@ -3,7 +3,7 @@
 {% block title %}Hello AdvisorController!{% endblock %}
 
 {% block body %}
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-6">
         <div class="col-6">
             <h2 class="text-align-center text-color-primary text-size-30 mb-4">{{customer.name}} {{customer.firstName}} profil</h2>
             
@@ -39,19 +39,21 @@
                         {% set nbSavingAccount = 0 %}
                         {% for account in customer.accounts %}  
                             {% if account.type.name == "Current" %}
-                                <div class="account">
-                                    <div class="row">
-                                        <div class="col-6 text-align-left text-color-primary text-size-20">ACC {{loop.index - nbSavingAccount}}</div>
-                                        {% if account.balance < 0 %}
-                                            <div class="col-6 text-align-right text-color-danger text-size-20">- {{account.balance}}</div>
-                                        {% else %}
-                                            <div class="col-6 text-align-right text-color-primary text-size-20">+ {{account.balance}}</div>
-                                        {% endif %}
-                                    </div>
-                                    <p class="text-color-primary5 mb-2">*****{{account.num[6:10]}}</p>
-                                    <p class="text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</p>
+                                <a href="{{ path('advisorCustomerTransaction', {'id':account.id}) }}" class="text-decoration-none">
+                                    <div class="account">
+                                        <div class="row">
+                                            <div class="col-6 text-align-left text-color-primary text-size-20">ACC {{loop.index - nbSavingAccount}}</div>
+                                            {% if account.balance < 0 %}
+                                                <div class="col-6 text-align-right text-color-danger text-size-20">{{account.balance}} €</div>
+                                            {% else %}
+                                                <div class="col-6 text-align-right text-color-primary text-size-20">+ {{account.balance}} €</div>
+                                            {% endif %}
+                                        </div>
+                                        <p class="text-color-primary5 mb-2">{{account.num}}</p>
+                                        <p class="text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</p>
 
-                                </div>
+                                    </div>
+                                </a>
                             {% else %}
                             {% set nbSavingAccount = nbSavingAccount + 1 %}
                             {% endif %}
@@ -65,19 +67,21 @@
 
                         {% for account in customer.accounts %}  
                             {% if account.type.name == "Saving" %}
-                                <div class="account">
-                                    <div class="row">
-                                        <div class="col-6 text-align-left text-color-primary text-size-20">Saving {{loop.index - nbSavingAccount}}</div>
-                                        {% if account.balance < 0 %}
-                                            <div class="col-6 text-align-right text-color-danger text-size-20">- {{account.balance}}</div>
-                                        {% else %}
-                                            <div class="col-6 text-align-right text-color-primary text-size-20">+ {{account.balance}}</div>
-                                        {% endif %}
-                                    </div>
-                                    <p class="text-color-primary5 mb-2">*****{{account.num[6:10]}}</p>
-                                    <p class="text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</p>
+                                <a href="{{ path('advisorCustomerTransaction', {'id':account.id}) }}" class="text-decoration-none">
+                                    <div class="account">
+                                        <div class="row">
+                                            <div class="col-6 text-align-left text-color-primary text-size-20">Saving {{loop.index - nbSavingAccount}}</div>
+                                            {% if account.balance < 0 %}
+                                                <div class="col-6 text-align-right text-color-danger text-size-20">{{account.balance}} €</div>
+                                            {% else %}
+                                                <div class="col-6 text-align-right text-color-primary text-size-20">+ {{account.balance}} €</div>
+                                            {% endif %}
+                                        </div>
+                                        <p class="text-color-primary5 mb-2">*****{{account.num[6:10]}}</p>
+                                        <p class="text-color-primary text-bold">{{customer.name | upper}} {{customer.firstName | upper}}</p>
 
-                                </div>
+                                    </div>
+                                </a>
                             {% endif %}
                         {% endfor %}  
                     </div>
@@ -98,6 +102,11 @@
                                     <input type="number" name="amount" id="amount" class="col-6 text-align-right" placeholder="00,00" step="0.01" required autofocus>
                                     <div class="euroLogo col-6 text-color-primary5">€</div>
                                 </div>
+                                {% if errorTransact is defined %}
+                                    <div class="text-color-primary">
+                                        <h1>{{errorTransact}}</h1>
+                                    </div>
+                                {% endif %}
                                 <input type="hidden" name="numberFrom" class="numFrom" required>
                                 <input type="hidden" name="numberTo" class="numTo" required>
                                 <input type="hidden" name="typeTo" class="typeTo">
@@ -126,9 +135,9 @@
                                                             <div class="row">
                                                                 <div class="col-6 text-align-left text-color-primary nom">ACC {{loop.index}}</div>
                                                                 {% if account.balance < 0 %}
-                                                                    <div class="col-6 text-align-right text-color-danger bal">- {{account.balance}}</div>
+                                                                    <div class="col-6 text-align-right text-color-danger bal">{{account.balance}} €</div>
                                                                 {% else %}
-                                                                    <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}}</div>
+                                                                    <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}} €</div>
                                                                 {% endif %}
                                                             </div>
                                                             <h3 class="num text-color-primary5 mb-1">{{account.num}}</h3>
@@ -145,9 +154,9 @@
                                                             <div class="row">
                                                                 <div class="col-6 text-align-left text-color-primary nom">Saving {{loop.index}}</div>
                                                                 {% if account.balance < 0 %}
-                                                                    <div class="col-6 text-align-right text-color-danger bal">- {{account.balance}}</div>
+                                                                    <div class="col-6 text-align-right text-color-danger bal">{{account.balance}} €</div>
                                                                 {% else %}
-                                                                    <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}}</div>
+                                                                    <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}} €</div>
                                                                 {% endif %}
                                                             </div>
                                                             <h3 class="num text-color-primary5 mb-1">{{account.num}}</h3>
@@ -195,9 +204,9 @@
                                                                 <div class="row">
                                                                     <div class="col-6 text-align-left text-color-primary nom">ACC {{loop.index}}</div>
                                                                     {% if account.balance < 0 %}
-                                                                        <div class="col-6 text-align-right text-color-danger bal">- {{account.balance}}</div>
+                                                                        <div class="col-6 text-align-right text-color-danger bal">{{account.balance}} €</div>
                                                                     {% else %}
-                                                                        <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}}</div>
+                                                                        <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}} €</div>
                                                                     {% endif %}
                                                                 </div>
                                                                 <h3 class="num text-color-primary5 mb-1">{{account.num}}</h3>
@@ -214,9 +223,9 @@
                                                                 <div class="row">
                                                                     <div class="col-6 text-align-left text-color-primary nom">Saving {{loop.index}}</div>
                                                                     {% if account.balance < 0 %}
-                                                                        <div class="col-6 text-align-right text-color-danger bal">- {{account.balance}}</div>
+                                                                        <div class="col-6 text-align-right text-color-danger bal">{{account.balance}} €</div>
                                                                     {% else %}
-                                                                        <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}}</div>
+                                                                        <div class="col-6 text-align-right text-color-primary bal">+ {{account.balance}} €</div>
                                                                     {% endif %}
                                                                 </div>
                                                                 <h3 class="num text-color-primary5 mb-1">{{account.num}}</h3>

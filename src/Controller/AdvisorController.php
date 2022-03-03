@@ -11,6 +11,8 @@ use App\Entity\Document;
 use App\Entity\Account;
 use App\Entity\AccountType;
 use App\Entity\Beneficiary;
+use App\Entity\Transferts;
+use App\Entity\TransfertsType;
 
 use App\Form\AccountFormType;
 
@@ -179,7 +181,7 @@ class AdvisorController extends AbstractController
                     }
 
                     if($canTryTransact){
-                        if($accountTo->getLimitBalance() != null){
+                        if($accountTo->getLimitBalance() == null){
                             $canTransact = true;
                         }else{
                             if( ($accountTo->getBalance() + $amount) < $accountTo->getLimitBalance()){
@@ -191,9 +193,18 @@ class AdvisorController extends AbstractController
                             $accountFrom->setBalance( $accountFrom->getBalance() - $amount );
                             $accountTo->setBalance( $accountTo->getBalance() + $amount );
 
+                            $transfertType = $this->getDoctrine()->getRepository(TransfertsType::class)->findOneBy(array('name'=>'Advisor transfert'));
+                            $transfert = new Transferts();
+                            $transfert->setType($transfertType);
+                            $transfert->setFromAccount($accountFrom);
+                            $transfert->setDestinationAccount($accountTo);
+                            $transfert->setDate(new \DateTime(date('now')));
+                            $transfert->setAmount($amount);
+
                             $em = $this->getDoctrine()->getManager();
                             $em->persist($accountFrom);
                             $em->persist($accountTo);
+                            $em->persist($transfert);
                             $em->flush();
 
                             return $this->redirectToRoute('advisorCustomer', array('id'=>$customer->getId()));
@@ -301,6 +312,19 @@ class AdvisorController extends AbstractController
         return $this->render('advisor/customer.html.twig', [
             'customer' => $customer,
             'formNewAccount' => $formNewAccount->createView(),
+        ]);
+    }
+
+    #[Route('/advisor/customer/transaction/{id}', name: 'advisorCustomerTransaction')]
+    public function customerTransaction(int $id): Response
+    {
+        $account = $this->getDoctrine()->getRepository(Account::class)->find($id);
+        $transferts = $this->getDoctrine()->getRepository(Transferts::class)->getAllTransactionByYear("2022",$account);
+        
+
+        return $this->render('advisor/customerTransaction.html.twig', [
+            'account' => $account,
+            'transferts' => $transferts,
         ]);
     }
 /* ---------------------------- Functions ---------------------------- */

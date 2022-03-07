@@ -1,3 +1,32 @@
+.paysage{
+    height: 100vh;
+    position: fixed;
+    right: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.paysageTop{
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    height: 170px;
+    top:0;
+    background-size: cover;
+    background-position:top;
+}
+
+.paysageTop p{
+    text-align: center;
+    vertical-align: middle;
+    position: absolute;
+    bottom: 50px;
+    left:45vw;
+    font-weight: 1000;
+    font-size: 35px;
+    margin: auto;
+}
+
     .customerDocumentCard {
         background-color: var(--primary);
         border-radius: 5px;

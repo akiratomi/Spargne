@@ -6,10 +6,18 @@ use App\Repository\AccountRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=AccountRepository::class)
+ * @ORM\Table(name="`account`")
  */
+#[ApiResource(normalizationContext:['groups' => ['read']],
+itemOperations:["GET" => ['method' => 'GET', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"]],
+collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object == user"]] 
+)]
 class Account
 {
     /**
@@ -17,26 +25,31 @@ class Account
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(["read"])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $num;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $iban;
 
     /**
      * @ORM\Column(type="float")
      */
+    #[Groups(["read"])]
     private $balance;
 
     /**
      * @ORM\Column(type="date")
      */
+    #[Groups(["read"])]
     private $creation_date;
 
     /**
@@ -48,16 +61,19 @@ class Account
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
+    #[Groups(["read"])]
     private $limitBalance;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
+    #[Groups(["read"])]
     private $overdraft;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
+    #[Groups(["read"])]
     private $rate;
 
     /**
@@ -81,11 +97,22 @@ class Account
      */
     private $transfertsIn;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="account", orphanRemoval=true)
+     */
+    private $cards;
+
     public function __construct()
     {
         $this->beneficiaries = new ArrayCollection();
         $this->transfertsOut = new ArrayCollection();
         $this->transfertsIn = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -285,6 +312,48 @@ class Account
             // set the owning side to null (unless already changed)
             if ($transfertsIn->getDestinationAccount() === $this) {
                 $transfertsIn->setDestinationAccount(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
+    public function getCards(): Collection
+    {
+        return $this->cards;
+    }
+
+    public function addCard(Card $card): self
+    {
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
+            $card->setAccount($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCard(Card $card): self
+    {
+        if ($this->cards->removeElement($card)) {
+            // set the owning side to null (unless already changed)
+            if ($card->getAccount() === $this) {
+                $card->setAccount(null);
             }
         }
 

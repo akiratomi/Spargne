@@ -131,11 +131,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="customers")
      */
+    #[Groups(["read"])]
     private $advisor;
 
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="advisor")
      */
+    #[Groups(["read"])]
     private $customers;
 
     /**
@@ -146,17 +148,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="boolean")
      */
+    #[Groups(["read"])]
     private $firstMdp;
 
     /**
      * @ORM\OneToMany(targetEntity=Account::class, mappedBy="owner", orphanRemoval=true)
      */
+    #[Groups(["read"])]
     private $accounts;
 
     /**
      * @ORM\OneToMany(targetEntity=Beneficiary::class, mappedBy="owner", orphanRemoval=true)
      */
+    #[Groups(["read"])]
     private $beneficiaries;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Card::class, mappedBy="owner", orphanRemoval=true)
+     */
+    private $cards;
 
     public function __construct()
     {
@@ -164,6 +174,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->modifyProfils = new ArrayCollection();
         $this->accounts = new ArrayCollection();
         $this->beneficiaries = new ArrayCollection();
+        $this->cards = new ArrayCollection();
     }
 
 
@@ -548,6 +559,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($beneficiary->getOwner() === $this) {
                 $beneficiary->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Card[]
+     */
+    public function getCards(): Collection
+    {
+        return $this->cards;
+    }
+
+    public function addCard(Card $card): self
+    {
+        if (!$this->cards->contains($card)) {
+            $this->cards[] = $card;
+            $card->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCard(Card $card): self
+    {
+        if ($this->cards->removeElement($card)) {
+            // set the owning side to null (unless already changed)
+            if ($card->getOwner() === $this) {
+                $card->setOwner(null);
             }
         }
 

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center text-align-center mt-6">
+    <div class="col-8">
+        <h1 class="text-color-primary">Accounts.</h1>
+    </div>
+</div>
+
+<div id="Account"> <!-- ################## Account ################## -->
+        <div class="row justify-content-center">
+            <div class="col-10">
+
+                <div class="row justify-content-center mb-5">
+                    <div class="col-6"> 
+                        <h3 class="text-color-primary account_section">Current account</h3>
+                        {% set nbSavingAccount = 0 %}
+                        {% for account in app.user.accounts %}  
+                            {% if account.type.name == "Current" %}
+                                <a href="{{ path('customerAccountTransaction', {'id':account.id}) }}" class="text-decoration-none">
+                                    <div class="account">
+                                        <div class="row">
+                                            <div class="col-6 text-align-left text-color-primary text-size-20">ACC {{loop.index - nbSavingAccount}}</div>
+                                            {% if account.balance < 0 %}
+                                                <div class="col-6 text-align-right text-color-danger text-size-20">{{account.balance}} €</div>
+                                            {% else %}
+                                                <div class="col-6 text-align-right text-color-primary text-size-20">+ {{account.balance}} €</div>
+                                            {% endif %}
+                                        </div>
+                                        <p class="text-color-primary5 mb-2">{{account.num}}</p>
+                                        <p class="text-color-primary text-bold">{{app.user.name | upper}} {{app.user.firstName | upper}}</p>
+
+                                    </div>
+                                </a>
+                            {% else %}
+                            {% set nbSavingAccount = nbSavingAccount + 1 %}
+                            {% endif %}
+                        {% endfor %}  
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-6"> 
+                        <h3 class="text-color-primary account_section">Savings account</h3>
+
+                        {% for account in app.user.accounts %}  
+                            {% if account.type.name == "Saving" %}
+                                <a href="{{ path('advisorCustomerTransaction', {'id':account.id}) }}" class="text-decoration-none">
+                                    <div class="account">
+                                        <div class="row">
+                                            <div class="col-6 text-align-left text-color-primary text-size-20">Saving {{loop.index - nbSavingAccount}}</div>
+                                            {% if account.balance < 0 %}
+                                                <div class="col-6 text-align-right text-color-danger text-size-20">{{account.balance}} €</div>
+                                            {% else %}
+                                                <div class="col-6 text-align-right text-color-primary text-size-20">+ {{account.balance}} €</div>
+                                            {% endif %}
+                                        </div>
+                                        <p class="text-color-primary5 mb-2">*****{{account.num[6:10]}}</p>
+                                        <p class="text-color-primary text-bold">{{app.user.name | upper}} {{app.user.firstName | upper}}</p>
+
+                                    </div>
+                                </a>
+                            {% endif %}
+                        {% endfor %}  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

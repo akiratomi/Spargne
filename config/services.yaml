@@ -4,8 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    website_url: 'http://s4-8012.nuage-peda.fr/public/Spargne/public/'
-    file_directory_twig: 'http://s4-8012.nuage-peda.fr/public/Spargne/'
+    website_url: 'http://s4-8040.nuage-peda.fr/Spargne/public/'
+    file_directory_twig: 'http://s4-8040.nuage-peda.fr/Spargne/'
     file_directory: '%kernel.project_dir%/document/'
 services:
     # default configuration for services in *this* file

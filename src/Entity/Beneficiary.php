@@ -5,9 +5,17 @@ namespace App\Entity;
 use App\Repository\BeneficiaryRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=BeneficiaryRepository::class)
  */
+#[ApiResource(normalizationContext:['groups' => ['read']],
+itemOperations:["GET" => ['method' => 'GET', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"],
+],
+collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object == user"]] 
+)]
 class Beneficiary
 {
     /**
@@ -15,6 +23,7 @@ class Beneficiary
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(["read"])]
     private $id;
 
     /**
@@ -27,16 +36,19 @@ class Beneficiary
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="beneficiaries")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(["read"])]
     private $account;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $name;
 
     /**
      * @ORM\Column(type="date")
      */
+    #[Groups(["read"])]
     private $added_date;
 
     public function getId(): ?int

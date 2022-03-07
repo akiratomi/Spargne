@@ -8,3 +8,5 @@ api_platform:
             apiKey:
                 name: Authorization
                 type: header
+    eager_loading:
+        max_joins: 1000

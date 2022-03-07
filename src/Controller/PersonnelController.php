@@ -33,7 +33,8 @@ class PersonnelController extends AbstractController
 
             $newHire = new Hire();
             $newHire->setToken($token);
-            $newHire->setDate(new \DateTime(date('now')));
+            $date = new \DateTime(date("m.d.y"));
+            $newHire->setDate($date);
             $newHire->setEmail($hireEmail);
             $newHire->setType($typeAdvisor);
             $status = $this->getDoctrine()->getRepository(HireStatus::class)->findOneBy(array('name'=>'Send'));
@@ -107,7 +108,8 @@ class PersonnelController extends AbstractController
 
             $newHire = new Hire();
             $newHire->setToken($token);
-            $newHire->setDate(new \DateTime(date('now')));
+            $date = new \DateTime(date("m.d.y"));
+            $newHire->setDate($date);
             $newHire->setEmail($hireEmail);
             $newHire->setType($typeSecretary);
             $status = $this->getDoctrine()->getRepository(HireStatus::class)->findOneBy(array('name'=>'Send'));

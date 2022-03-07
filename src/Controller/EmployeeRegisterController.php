@@ -38,7 +38,8 @@ class EmployeeRegisterController extends AbstractController
                 $form->handleRequest($request); 
                 if ($form->isSubmitted() && $form->isValid()) {
                     $user->setRoles(array('ROLE_ADVISOR'));
-                    $user->setRegisterDate(new \DateTime(date('now')));
+                    $date = new \DateTime(date("m.d.y"));
+                    $user->setRegisterDate($date);
                     $user->setProfilPicture("TEMP");
 
                     $uid = $this->generateUID(10);
@@ -142,7 +143,8 @@ class EmployeeRegisterController extends AbstractController
                 $form->handleRequest($request); 
                 if ($form->isSubmitted() && $form->isValid()) {
                     $user->setRoles(array('ROLE_SECRETARY'));
-                    $user->setRegisterDate(new \DateTime(date('now')));
+                    $date = new \DateTime(date("m.d.y"));
+                    $user->setRegisterDate($date);
                     $user->setProfilPicture("TEMP");
 
                     $uid = $this->generateUID(10);

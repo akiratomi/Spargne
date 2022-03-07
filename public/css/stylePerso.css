@@ -410,3 +410,48 @@
     }
     
     .transactionAmount {}
+
+    .card{
+        width: 400px;
+        position: relative;
+        margin: auto;
+    }
+
+    .card .number{
+         position: absolute;
+         bottom: 80px;
+         left: 40px;
+         font-size: 25px;
+         letter-spacing: 2px;
+         text-shadow: var(--primary-9) 2px 2px 2px;
+    }
+
+    .card .crypto{
+        position: absolute;
+        bottom: 10px;
+        left: 40px;
+        font-size: 15px;
+        letter-spacing: 2px;
+        text-shadow: var(--primary-9) 2px 2px 2px;
+         
+    }
+
+    .card .dateExp{
+        position: absolute;
+        position: absolute;
+        bottom: 80px;
+        left: 320px;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-shadow: var(--primary-9) 2px 2px 2px;
+    }
+
+    .card .owner{
+        position: absolute;
+        position: absolute;
+        bottom: 40px;
+        left: 40px;
+        font-size: 20px;
+        letter-spacing: 2px;
+        text-shadow: var(--primary-9) 2px 2px 2px;
+    }

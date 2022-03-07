@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}beneficiaries Management{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center text-align-center mt-6">
+    <div class="col-8">
+        <h1 class="text-color-primary">beneficiaries Management.</h1>
+    </div>
+</div>
+
+<div id="More"> <!-- ################## More ################## -->
+        <div class="row justify-content-center">
+            <div class="col-10">
+
+                <div class="row justify-content-center mt-3">
+                    <div class="col-6">
+                        <div class="sectionMoreForm">
+                        
+                                <h2>Add a beneficiary</h2>
+                                <form action="{{ path('beneficiariesManagement', {'id':app.user.id}) }}" method="post">
+                                    <div class="row justify-content-center">
+                                        <div class="col-5 text-align-right mr-2">
+                                            <label for="name" class="label">New beneficiary name :</label>
+                                        </div>
+                                        <div class="col-5 mb-2 mr-2">
+                                            <input type="text" name="name" id="name" class="form-control" placeholder="Name ..." required autofocus>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-5 text-align-right mr-2">
+                                            <label for="iban" class="label">New beneficiary's IBAN :</label>
+                                        </div>
+                                        <div class="col-5 mb-2 mr-2">
+                                            <input type="text" name="iban" id="iban" class="form-control" placeholder="IBAN ..." required autofocus>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center text-align-center">
+                                        <div class="col-12 ml-2 mb-2">
+                                            <button class="btn btn-secondary" type="submit" name="beneficiaryAddBtn">
+                                                Add
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {% if error is defined %}
+                                        <div class="row justify-content-center">
+                                            <div class="col">
+                                                <h1 class="text-color-quinary text-align-center">{{error}}</h1>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </form>
+        
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center mt-3">
+                <h1 class="text-align-center text-color-primary">Beneficiaries list</h1>
+                    <div class="col-6">
+                        <div class="table-responsive mt-2">
+                            <table class="table table-hover">
+                                <thead class="text-size-12 headBeneficiary">
+                                    <tr class="table-color-primary th-primary">
+                                        <th>Name</th>
+                                        <th>IBAN</th>
+                                        <th>Owner</th>
+                                        <th>Added date</th>
+                                        <th>Remove</th>
+                                        <th id="iconOpen">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 0 24 24" width="50px" fill="#FFFF">
+                                                <path d="M0 0h24v24H0V0z" fill="none"/>
+                                                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                                            </svg>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-size-12 text-bold bodyBeneficiary">
+                                    {% for beneficiary in app.user.beneficiaries %}
+                                            <tr class="td-primary {{ cycle(['table-color-tertiary', 'table-color-tertiary'], loop.index0) }}">
+                                                <td class="text-align-center">{{ beneficiary.name }}</td>
+                                                <td class="text-align-center">{{ beneficiary.account.iban[0:2] | upper }} {{ beneficiary.account.iban[2:2] }} {{ beneficiary.account.iban[4:16] }}</td>
+                                                <td class="text-align-center">{{ beneficiary.account.owner.name}} {{ beneficiary.account.owner.firstName}}</td>
+                                                <td class="text-align-center">{{ beneficiary.addedDate | date('d-m-Y') }}</td>
+                                                <td class="text-align-center"><a href="{{path('personnelHireAdvisorDelete', {'id':beneficiary.id})}}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#cfa200">
+                                                        <path d="M0 0h24v24H0z" fill="none"/>
+                                                        <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>
+                                                    </svg></a>
+                                                </td>
+                                            </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="{{ asset('js/scriptNavCustomer.js')}}"></script>
+
+{% endblock %}

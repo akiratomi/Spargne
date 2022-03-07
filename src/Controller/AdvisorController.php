@@ -13,6 +13,8 @@ use App\Entity\AccountType;
 use App\Entity\Beneficiary;
 use App\Entity\Transferts;
 use App\Entity\TransfertsType;
+use App\Entity\Card;
+use App\Entity\CardType;
 
 use App\Form\AccountFormType;
 
@@ -148,6 +150,8 @@ class AdvisorController extends AbstractController
     {
         $customer = $this->getDoctrine()->getRepository(User::class)->find($id);
 
+        $cardTypes = $this->getDoctrine()->getRepository(CardType::class)->findAll();
+        
         $newAccount = new Account();
         $formNewAccount = $this->createForm(AccountFormType::class, $newAccount);
 
@@ -198,7 +202,8 @@ class AdvisorController extends AbstractController
                             $transfert->setType($transfertType);
                             $transfert->setFromAccount($accountFrom);
                             $transfert->setDestinationAccount($accountTo);
-                            $transfert->setDate(new \DateTime(date('now')));
+                            $date = new \DateTime(date("m.d.y"));
+                            $transfert->setDate($date);
                             $transfert->setAmount($amount);
 
                             $em = $this->getDoctrine()->getManager();
@@ -210,6 +215,7 @@ class AdvisorController extends AbstractController
                             return $this->redirectToRoute('advisorCustomer', array('id'=>$customer->getId()));
                         }else{
                             return $this->render('advisor/customer.html.twig', [
+                                'cardTypes' => $cardTypes,
                                 'customer' => $customer,
                                 'formNewAccount' => $formNewAccount->createView(),
                                 'errorTransact' => 'Error : The "destination" selected account limit balance would be overated by this transfert',
@@ -217,6 +223,7 @@ class AdvisorController extends AbstractController
                         }
                     }else{
                         return $this->render('advisor/customer.html.twig', [
+                            'cardTypes' => $cardTypes,
                             'customer' => $customer,
                             'formNewAccount' => $formNewAccount->createView(),
                             'errorTransact' => 'Error : The "from" selected account hasn\'t enough balance to complet transfert',
@@ -224,6 +231,7 @@ class AdvisorController extends AbstractController
                     }
                 }else{
                     return $this->render('advisor/customer.html.twig', [
+                        'cardTypes' => $cardTypes,
                         'customer' => $customer,
                         'formNewAccount' => $formNewAccount->createView(),
                         'errorTransact' => 'Error : An error occured please try later',
@@ -231,6 +239,7 @@ class AdvisorController extends AbstractController
                 }
             }else{
                 return $this->render('advisor/customer.html.twig', [
+                    'cardTypes' => $cardTypes,
                     'customer' => $customer,
                     'formNewAccount' => $formNewAccount->createView(),
                     'errorTransact' => 'Error : Please select all field to complet transfert',
@@ -259,7 +268,8 @@ class AdvisorController extends AbstractController
                 $iban = $iban.$num;
                 $newAccount->setIban($iban);
                 $newAccount->setBalance(0);
-                $newAccount->setCreationDate(new \DateTime(date('now')));
+                $date = new \DateTime(date("m.d.y"));
+                $newAccount->setCreationDate($date);
                 $newAccount->setLimitBalance($newAccount->getType()->getLimitBalance());
                 $newAccount->setOverdraft($newAccount->getType()->getOverdraft());
                 $newAccount->setRate($newAccount->getType()->getRate());
@@ -277,11 +287,12 @@ class AdvisorController extends AbstractController
             $newBeneficiary = new Beneficiary();
             $test_acc = $this->getDoctrine()->getRepository(Account::class)->findOneBy(array('iban'=>$_POST['iban']));
             if($test_acc != null){
-                $newBeneficiary->setAddedDate(new \DateTime(date('now')));
+                $date = new \DateTime(date("m.d.y"));
+                $newBeneficiary->setAddedDate($date);
                 $newBeneficiary->setOwner($customer);
                 $newBeneficiary->setAccount($test_acc);
                 $test_name = $this->getDoctrine()->getRepository(Beneficiary::class)->findOneBy(array('name'=>$_POST['name'], 'owner'=>$customer));
-                if($test_name != null){
+                if($test_name == null){
                     $newBeneficiary->setName($_POST['name']);
 
                     $em = $this->getDoctrine()->getManager();
@@ -291,6 +302,7 @@ class AdvisorController extends AbstractController
                     return $this->redirectToRoute('advisorCustomer', array('id'=>$customer->getId()));
                 }else{
                     return $this->render('advisor/customer.html.twig', [
+                        'cardTypes' => $cardTypes,
                         'customer' => $customer,
                         'formNewAccount' => $formNewAccount->createView(),
                         'error' => 'That beneficiary name albready exist',
@@ -300,6 +312,7 @@ class AdvisorController extends AbstractController
 
             }else{
                 return $this->render('advisor/customer.html.twig', [
+                    'cardTypes' => $cardTypes,
                     'customer' => $customer,
                     'formNewAccount' => $formNewAccount->createView(),
                     'error' => 'No account found for this iban',
@@ -307,12 +320,66 @@ class AdvisorController extends AbstractController
             }
         }
 
+        if(isset($_POST['cardAddBtn'])){
+            $newCard = new Card();
+
+            $cardAccount = $this->getDoctrine()->getRepository(Account::class)->find($_POST['account']);
+            $cardType = $this->getDoctrine()->getRepository(CardType::class)->find($_POST['cardType']);
+            $cardCrypto = $this->generateUID(3);
+
+            $cardNumber = $this->generateUID(16);
+            $cardTest = $this->getDoctrine()->getRepository(Card::class)->findOneBy(array('number'=>$cardNumber));
+
+            while($cardTest != null){
+                $cardNumber = $this->generateUID(16);
+                $cardTest = $this->getDoctrine()->getRepository(Card::class)->findOneBy(array('number'=>$cardNumber));
+            }
+
+            $date = new \DateTime(date("m.d.y"));
+
+            $newCard->setCreationDate($date);
+            $newCard->setOwner($customer);
+            $newCard->setAccount($cardAccount);
+            $newCard->setType($cardType);
+            $newCard->setNumber($cardNumber);
+            $newCard->setCrypto($cardCrypto);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newCard);
+            $em->flush();
+
+        }
+
         
 
         return $this->render('advisor/customer.html.twig', [
+            'cardTypes' => $cardTypes,
             'customer' => $customer,
             'formNewAccount' => $formNewAccount->createView(),
         ]);
+    }
+
+    #[Route('/advisor/customer/cardRemove/{id}/{customer}', name: 'AdvisorCardRemove')]
+    public function cardRemove(int $id, int $customer): Response
+    {
+        $card = $this->getDoctrine()->getRepository(Card::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($card);
+        $em->flush();
+        
+
+        return $this->redirectToRoute('advisorCustomer', array('id'=>$customer));
+    }
+
+    #[Route('/advisor/customer/beneficiaryRemove/{id}/{customer}', name: 'AdvisorBeneficiaryRemove')]
+    public function beneficiaryRemove(int $id, int $customer): Response
+    {
+        $beneficiary = $this->getDoctrine()->getRepository(Beneficiary::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($beneficiary);
+        $em->flush();
+
+        return $this->redirectToRoute('advisorCustomer', array('id'=>$customer));
     }
 
     #[Route('/advisor/customer/transaction/{id}', name: 'advisorCustomerTransaction')]
@@ -327,6 +394,8 @@ class AdvisorController extends AbstractController
             'transferts' => $transferts,
         ]);
     }
+
+
 /* ---------------------------- Functions ---------------------------- */
 
     public function generateHtml($body)

@@ -35,7 +35,8 @@ class CustomerRegisterController extends AbstractController
             $newCustomerRequest->setEmail($email);
             $newCustomerRequest->setToken($token);
             $newCustomerRequest->setVerified(false);
-            $newCustomerRequest->setRequestDate(new \DateTime(date('now')));
+            $date = new \DateTime(date("m.d.y"));
+            $newCustomerRequest->setRequestDate($date);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($newCustomerRequest);
@@ -89,7 +90,8 @@ class CustomerRegisterController extends AbstractController
                 $form->handleRequest($request); 
                 if ($form->isSubmitted() && $form->isValid()) {
                     $user->setRoles(array('ROLE_CUSTOMER_REQUEST'));
-                    $user->setRegisterDate(new \DateTime(date('now')));
+                    $date = new \DateTime(date("m.d.y"));
+                    $user->setRegisterDate($date);
                     $user->setProfilPicture("TEMP");
                     $uid = $this->generateUID(10);
                     $test_user = $this->getDoctrine()->getRepository(User::class)->findOneBy(array('uuid'=>$uid));

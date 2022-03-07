@@ -7,9 +7,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=AccountTypeRepository::class)
  */
+#[ApiResource(normalizationContext:['groups' => ['read']],
+itemOperations:["GET" => ['method' => 'GET', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"]],
+collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object == user"]] 
+)]
 class AccountType
 {
     /**
@@ -22,6 +29,7 @@ class AccountType
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $name;
 
     /**

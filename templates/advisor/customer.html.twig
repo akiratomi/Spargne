@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdvisorController!{% endblock %}
+{% block title %}Customer administration{% endblock %}
 
 {% block body %}
     <div class="row justify-content-center mt-6">
@@ -42,7 +42,7 @@
                                 <a href="{{ path('advisorCustomerTransaction', {'id':account.id}) }}" class="text-decoration-none">
                                     <div class="account">
                                         <div class="row">
-                                            <div class="col-6 text-align-left text-color-primary text-size-20">ACC {{loop.index - nbSavingAccount}}</div>
+                                            <div class="col-6 text-align-left text-color-primary text-size-20">{{account.name}}</div>
                                             {% if account.balance < 0 %}
                                                 <div class="col-6 text-align-right text-color-danger text-size-20">{{account.balance}} €</div>
                                             {% else %}
@@ -70,7 +70,7 @@
                                 <a href="{{ path('advisorCustomerTransaction', {'id':account.id}) }}" class="text-decoration-none">
                                     <div class="account">
                                         <div class="row">
-                                            <div class="col-6 text-align-left text-color-primary text-size-20">Saving {{loop.index - nbSavingAccount}}</div>
+                                            <div class="col-6 text-align-left text-color-primary text-size-20">{{account.name}}</div>
                                             {% if account.balance < 0 %}
                                                 <div class="col-6 text-align-right text-color-danger text-size-20">{{account.balance}} €</div>
                                             {% else %}
@@ -281,7 +281,25 @@
     <div id="Card"> <!-- ################## Card ################## -->
         <div class="row justify-content-center">
             <div class="col-10">
-                <h2 class="text-align-center text-color-primary text-size-30 mb-4">Card</h2>
+                <h2 class="text-align-center text-color-primary text-size-30 mb-4">Cards</h2>
+                <div class="row justify-content-center text-align-center">
+                    {% for card in customer.cards %}
+                        
+                        <div class="col-5 mb-6">
+                            <h2 class="text-color-primary">Card for account : {{card.account.name}} ({{card.account.num}})</h2>
+                            <a href="{{ path('AdvisorCardRemove', {'id':card.id, 'customer':customer.id}) }}"><button class="btn btn-danger mt-1 mb-1" type="submit" name="cardAddBtn">
+                                Delete
+                            </button></a>
+                            <div class="card">
+                                <img src="{{file_directory}}img/logo/{{card.type.imgPath}}">
+                                <p class="number">{{card.number[0:4]}} {{card.number[4:4]}} {{card.number[8:4]}} {{card.number[12:4]}}</p>
+                                <p class="crypto">Crypto : {{card.crypto}}</p>
+                                <p class="dateExp">Exp. date :<br>{{card.creationDate|date_modify("+1 year") | date('m/Y')}}</p>
+                                <p class="owner">{{card.owner.name[0:8]}} {{card.owner.firstName[0:8]}}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
@@ -306,6 +324,61 @@
                                     </div>
                                 </div>
                                 {{form_end(formNewAccount, {render_rest: true})}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center mt-3">
+                    <div class="col-6">
+                        <div class="sectionMoreForm">
+                        
+                                <h2>Add card</h2>
+                                <form action="{{ path('advisorCustomer', {'id':customer.id}) }}" method="post">
+                                    <div class="row justify-content-center">
+                                        <div class="col-5 text-align-right mr-2">
+                                            <label for="cardType" class="label">Card type :</label>
+                                        </div>
+                                        <div class="col-5 mb-2 mr-2">
+                                            <select name="cardType" id="pet-select" class="form-control">
+                                                {% for cardType in cardTypes %}
+                                                    <option value="{{cardType.id}}">{{cardType.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center">
+                                        <div class="col-5 text-align-right mr-2">
+                                            <label for="account" class="label">Account link to :</label>
+                                        </div>
+                                        <div class="col-5 mb-2 mr-2">
+                                            <select name="account" id="pet-select" class="form-control">
+                                                {% for account in customer.accounts %} 
+                                                    {% if account.type.id == 1 %} 
+                                                        <option value="{{account.id}}">{{account.name}}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row justify-content-center text-align-center">
+                                        <div class="col-12 ml-2 mb-2">
+                                            <button class="btn btn-secondary" type="submit" name="cardAddBtn">
+                                                Add
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {% if error is defined %}
+                                        <div class="row justify-content-center">
+                                            <div class="col">
+                                                <h1 class="text-color-quinary text-align-center">{{error}}</h1>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </form>
+        
                         </div>
                     </div>
                 </div>
@@ -345,7 +418,7 @@
                                     {% if error is defined %}
                                         <div class="row justify-content-center">
                                             <div class="col">
-                                                <h1 class="text-color-quinary text-align-center">Please enter a valid address</h1>
+                                                <h1 class="text-color-quinary text-align-center">{{error}}</h1>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -382,7 +455,7 @@
                                                 <td class="text-align-center">{{ beneficiary.account.iban[0:2] | upper }} {{ beneficiary.account.iban[2:2] }} {{ beneficiary.account.iban[4:16] }}</td>
                                                 <td class="text-align-center">{{ beneficiary.account.owner.name}} {{ beneficiary.account.owner.firstName}}</td>
                                                 <td class="text-align-center">{{ beneficiary.addedDate | date('d-m-Y') }}</td>
-                                                <td class="text-align-center"><a href="{{path('personnelHireAdvisorDelete', {'id':beneficiary.id})}}">
+                                                <td class="text-align-center"><a href="{{path('AdvisorBeneficiaryRemove', {'id':beneficiary.id, 'customer':customer.id})}}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#cfa200">
                                                         <path d="M0 0h24v24H0z" fill="none"/>
                                                         <path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/>

@@ -9,14 +9,43 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass=AccountRepository::class)
  * @ORM\Table(name="`account`")
  */
-#[ApiResource(normalizationContext:['groups' => ['read']],
-itemOperations:["GET" => ['method' => 'GET', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"]],
-collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object == user"]] 
+#[ApiResource(normalizationContext:['groups' => ['read'],'enable_max_depth'=>true],
+itemOperations:[
+    "GET" => [
+        'method' => 'GET', 
+        'path' => '/account/{id}', 
+        "security"=>"is_granted('ROLE_DIRECTOR') or object.owner == user"]
+],
+collectionOperations:[
+    "GET" => [
+        'method' => 'GET', 
+        'path' => '/accounts/{uuid}', 
+        'route_name' => 'GetAccountByUuid',
+        "security"=>"is_granted('ROLE_DIRECTOR')",
+        'filters' => [],
+        'pagination_enabled' => false,
+        'openapi_context' => [
+            'summary' => "Récupère un utilisateur par son id",
+            'parameters' => [
+                [
+                    'in' => 'path',
+                    'name' => 'uuid',
+                    'description' => 'Identifiant de l\'utilisateur',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'integer'
+                    ]
+                ]
+            ],
+        ],
+    ]
+]
 )]
 class Account
 {
@@ -56,7 +85,7 @@ class Account
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="accounts")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $owner;
+    public $owner;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -80,6 +109,7 @@ class Account
      * @ORM\ManyToOne(targetEntity=AccountType::class, inversedBy="accounts")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(["read"])]
     private $type;
 
     /**
@@ -89,17 +119,20 @@ class Account
 
     /**
      * @ORM\OneToMany(targetEntity=Transferts::class, mappedBy="fromAccount")
+     * @MaxDepth(1)
      */
     private $transfertsOut;
 
     /**
      * @ORM\OneToMany(targetEntity=Transferts::class, mappedBy="destinationAccount")
+     * @MaxDepth(1)
      */
     private $transfertsIn;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $name;
 
     /**

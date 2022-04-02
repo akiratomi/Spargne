@@ -24,6 +24,7 @@ class AccountType
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(["read"])]
     private $id;
 
     /**

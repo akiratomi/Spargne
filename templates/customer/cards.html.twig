@@ -9,7 +9,28 @@
     </div>
 </div>
 <div class="row justify-content-center text-align-center mt-6">
-    <div class="col-8">
+    <div class="col-10">
+    <div id="Card"> <!-- ################## Card ################## -->
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="row justify-content-center text-align-center">
+                    {% for card in app.user.cards %}
+                        
+                        <div class="col-6 mb-6">
+                            <h2 class="text-color-primary">Card for account : {{card.account.name}} ({{card.account.num}})</h2>
+                            <div class="card">
+                                <img src="{{file_directory}}img/logo/{{card.type.imgPath}}">
+                                <p class="number">{{card.number[0:4]}} {{card.number[4:4]}} {{card.number[8:4]}} {{card.number[12:4]}}</p>
+                                <p class="crypto">Crypto : {{card.crypto}}</p>
+                                <p class="dateExp">Exp. date :<br>{{card.creationDate|date_modify("+1 year") | date('m/Y')}}</p>
+                                <p class="owner">{{card.owner.name[0:8]}} {{card.owner.firstName[0:8]}}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 {% endblock %}

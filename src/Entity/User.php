@@ -18,9 +18,9 @@ use App\Controller\Custom\GetUserByUuid;
  * @ORM\Table(name="`user`")
  */
 #[ApiResource(normalizationContext:['groups' => ['read']],
-itemOperations:["GET" => ['method' => 'GET', 'path' => '/users/{uuid}', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"],
-    'GETBYUUID' => ['method' => 'GET', 'path' => '/users/getByUuid/{uuid}', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"],
-
+itemOperations:[
+    "GET" => ['method' => 'GET', 'path' => '/users/{uuid}', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"],
+    'GETBYUUID' => ['method' => 'GET', 'path' => '/users/getByUuid/{uuid}', 'controller' => GetUserByUuid::class, "security"=>"is_granted('ROLE_DIRECTOR') or object == user"],
 ],
 collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object == user"]] 
 )]
@@ -137,7 +137,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="advisor")
      */
-    #[Groups(["read"])]
     private $customers;
 
     /**
@@ -154,13 +153,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\OneToMany(targetEntity=Account::class, mappedBy="owner", orphanRemoval=true)
      */
-    #[Groups(["read"])]
     private $accounts;
 
     /**
      * @ORM\OneToMany(targetEntity=Beneficiary::class, mappedBy="owner", orphanRemoval=true)
      */
-    #[Groups(["read"])]
     private $beneficiaries;
 
     /**

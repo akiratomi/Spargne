@@ -4,12 +4,17 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CardRepository;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CardRepository::class)
  */
-#[ApiResource]
+#[ApiResource(normalizationContext:['groups' => ['read']],
+itemOperations:["GET" => ['method' => 'GET', "security"=>"is_granted('ROLE_DIRECTOR') or object.owner == user"]],
+collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object.owner == user"]] 
+)]
 class Card
 {
     /**
@@ -17,34 +22,39 @@ class Card
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(["read"])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $number;
 
     /**
      * @ORM\Column(type="string", length=3)
      */
+    #[Groups(["read"])]
     private $crypto;
 
     /**
      * @ORM\Column(type="date")
      */
+    #[Groups(["read"])]
     private $creationDate;
 
     /**
      * @ORM\ManyToOne(targetEntity=CardType::class, inversedBy="cards")
      * @ORM\JoinColumn(nullable=false)
      */
+    #[Groups(["read"])]
     private $type;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="cards")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $owner;
+    public $owner;
 
     /**
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="cards")

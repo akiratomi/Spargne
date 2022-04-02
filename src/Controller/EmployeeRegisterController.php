@@ -55,7 +55,7 @@ class EmployeeRegisterController extends AbstractController
                     $password = $this->generatePassword(8);
 
                     $user->setPassword($passwordHasher->hashPassword($user,$password));
-                    
+                    $user->setFirstMdp(true);
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($user);
                     $em->flush();
@@ -160,6 +160,7 @@ class EmployeeRegisterController extends AbstractController
                     $password = $this->generatePassword(8);
 
                     $user->setPassword($passwordHasher->hashPassword($user,$password));
+                    $user->setFirstMdp(true);
                     
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($user);

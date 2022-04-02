@@ -12,9 +12,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=BeneficiaryRepository::class)
  */
 #[ApiResource(normalizationContext:['groups' => ['read']],
-itemOperations:["GET" => ['method' => 'GET', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"],
+itemOperations:["GET" => ['method' => 'GET', "security"=>"is_granted('ROLE_DIRECTOR') or object.owner == user"],
 ],
-collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object == user"]] 
+collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object.owner == user"]] 
 )]
 class Beneficiary
 {
@@ -30,7 +30,7 @@ class Beneficiary
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="beneficiaries")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $owner;
+    public $owner;
 
     /**
      * @ORM\ManyToOne(targetEntity=Account::class, inversedBy="beneficiaries")

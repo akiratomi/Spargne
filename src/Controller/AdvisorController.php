@@ -273,6 +273,7 @@ class AdvisorController extends AbstractController
                 $newAccount->setLimitBalance($newAccount->getType()->getLimitBalance());
                 $newAccount->setOverdraft($newAccount->getType()->getOverdraft());
                 $newAccount->setRate($newAccount->getType()->getRate());
+                $newAccount->setName("ACC");
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($newAccount);

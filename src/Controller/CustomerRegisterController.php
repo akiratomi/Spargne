@@ -106,6 +106,7 @@ class CustomerRegisterController extends AbstractController
                     $password = $this->generatePassword(8);
 
                     $user->setPassword($passwordHasher->hashPassword($user,$password));
+                    $user->setFirstMdp(true);
 
                     
 

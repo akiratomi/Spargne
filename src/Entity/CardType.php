@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CardTypeRepository;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +13,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=CardTypeRepository::class)
  */
-#[ApiResource]
+#[ApiResource(normalizationContext:['groups' => ['read']],
+itemOperations:["GET" => ['method' => 'GET', "security"=>"is_granted('ROLE_DIRECTOR') or object == user"]],
+collectionOperations:['GET'=>["security"=>"is_granted('ROLE_DIRECTOR') or object == user"]] 
+)]
 class CardType
 {
     /**
@@ -19,11 +24,13 @@ class CardType
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(["read"])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $name;
 
     /**
@@ -34,6 +41,7 @@ class CardType
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(["read"])]
     private $imgPath;
 
     public function __construct()

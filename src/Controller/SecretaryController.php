@@ -22,10 +22,11 @@ class SecretaryController extends AbstractController
         ]);
     }
 
-    #[Route('/secretary/advisorSchedule/{id}', name: 'advisorSchedule')]
-    public function advisorSchedule(int $id): Response
+    #[Route('/secretary/advisorSchedule/{idAccount}/{idMeeting}', name: 'advisorSchedule')]
+    public function advisorSchedule(int $idAccount, int $idMeeting): Response
     {
-        $advisor = $this->getDoctrine()->getRepository(User::class)->find($id);
+        $currentMeetingRequest = $this->getDoctrine()->getRepository(MeetingRequest::class)->find($idMeeting);
+        $advisor = $this->getDoctrine()->getRepository(User::class)->find($idAccount);
         $advisorMeetings = $this->getDoctrine()->getRepository(AdvisorSchedule::class)->findBy(array('advisor' => $advisor));
 
         $advisorMeetingsMonday = array();
@@ -61,6 +62,7 @@ class SecretaryController extends AbstractController
         }
 
         return $this->render('secretary/advisorSchedule.html.twig', [
+            'currentMeetingRequest' => $currentMeetingRequest,
             'advisorMeetingsMonday' => $advisorMeetingsMonday,
             'advisorMeetingsTuesday' => $advisorMeetingsTuesday,
             'advisorMeetingsWednesday' => $advisorMeetingsWednesday,

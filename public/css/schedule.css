@@ -24,7 +24,8 @@ ol, ul {
     .cd-schedule {
         width: 90%;
         max-width: 1400px;
-        margin: 2em auto;
+        margin: 0em auto 2em;
+        padding-bottom: 1em;
     }
     .cd-schedule::after {
         clear: both;
@@ -212,6 +213,11 @@ ol, ul {
 }
 
 
+
+.cd-schedule .single-event[data-event="event-0"],
+.cd-schedule [data-event="event-0"] .header-bg {
+    background: #30ac2552;
+}
 
 .cd-schedule .single-event[data-event="event-1"],
 .cd-schedule [data-event="event-1"] .header-bg {

@@ -165,6 +165,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $cards;
 
+    /**
+     * @ORM\OneToMany(targetEntity=MeetingRequest::class, mappedBy="customer", orphanRemoval=true)
+     */
+    private $meetingRequests;
+
+    /**
+     * @ORM\OneToMany(targetEntity=AdvisorSchedule::class, mappedBy="advisor", orphanRemoval=true)
+     */
+    private $advisorSchedules;
+
     public function __construct()
     {
         $this->customers = new ArrayCollection();
@@ -172,6 +182,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->accounts = new ArrayCollection();
         $this->beneficiaries = new ArrayCollection();
         $this->cards = new ArrayCollection();
+        $this->meetingRequests = new ArrayCollection();
+        $this->advisorSchedules = new ArrayCollection();
     }
 
 
@@ -586,6 +598,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($card->getOwner() === $this) {
                 $card->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MeetingRequest[]
+     */
+    public function getMeetingRequests(): Collection
+    {
+        return $this->meetingRequests;
+    }
+
+    public function addMeetingRequest(MeetingRequest $meetingRequest): self
+    {
+        if (!$this->meetingRequests->contains($meetingRequest)) {
+            $this->meetingRequests[] = $meetingRequest;
+            $meetingRequest->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeetingRequest(MeetingRequest $meetingRequest): self
+    {
+        if ($this->meetingRequests->removeElement($meetingRequest)) {
+            // set the owning side to null (unless already changed)
+            if ($meetingRequest->getCustomer() === $this) {
+                $meetingRequest->setCustomer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AdvisorSchedule[]
+     */
+    public function getAdvisorSchedules(): Collection
+    {
+        return $this->advisorSchedules;
+    }
+
+    public function addAdvisorSchedule(AdvisorSchedule $advisorSchedule): self
+    {
+        if (!$this->advisorSchedules->contains($advisorSchedule)) {
+            $this->advisorSchedules[] = $advisorSchedule;
+            $advisorSchedule->setAdvisor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvisorSchedule(AdvisorSchedule $advisorSchedule): self
+    {
+        if ($this->advisorSchedules->removeElement($advisorSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($advisorSchedule->getAdvisor() === $this) {
+                $advisorSchedule->setAdvisor(null);
             }
         }
 

@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block css %}<link href="{{ asset('css/schedule.css')}}" rel="stylesheet">{% endblock %}
+
+{% block title %}Advisor Schedule{% endblock %}
+
+{% block body %}
+    <div class="cd-schedule loading">
+
+        <div class="timeline">
+            <ul>
+                <li><span>08:00</span></li>
+                <li><span>08:30</span></li>
+                <li><span>09:00</span></li>
+                <li><span>09:30</span></li>
+                <li><span>10:00</span></li>
+                <li><span>10:30</span></li>
+                <li><span>11:00</span></li>
+                <li><span>11:30</span></li>
+                <li><span>12:00</span></li>
+                <li><span>12:30</span></li>
+                <li><span>13:00</span></li>
+                <li><span>13:30</span></li>
+                <li><span>14:00</span></li>
+                <li><span>14:30</span></li>
+                <li><span>15:00</span></li>
+                <li><span>15:30</span></li>
+                <li><span>16:00</span></li>
+                <li><span>16:30</span></li>
+                <li><span>17:00</span></li>
+            </ul>
+        </div>
+
+        <div class="events">
+            <ul class="wrap">
+                
+                <li class="events-group">
+                    <div class="top-info"><span>Monday</span></div>
+                    <ul>
+                        {% for advisorMeetingMonday in advisorMeetingsMonday %}
+                            <li class="single-event" data-start="{{advisorMeetingMonday.date|date("H")}}:{{advisorMeetingMonday.date|date("i")}}" data-end="{{advisorMeetingMonday.date|date("H") + advisorMeetingMonday.duration|date("H")}}:{{advisorMeetingMonday.date|date("i") + advisorMeetingMonday.duration|date("i")}}" data-content="event-abs-circuit" data-event="event-1">
+                                <p class="event-name">{{advisorMeetingMonday.topic}}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li class="events-group">
+                    <div class="top-info"><span>Tuesday</span></div>
+                    <ul>
+                        {% for advisorMeetingTuesday in advisorMeetingsTuesday %}
+                            <li class="single-event" data-start="{{advisorMeetingTuesday.date|date("H")}}:{{advisorMeetingTuesday.date|date("i")}}" data-end="{{advisorMeetingTuesday.date|date("H") + advisorMeetingTuesday.duration|date("H")}}:{{advisorMeetingTuesday.date|date("i") + advisorMeetingTuesday.duration|date("i")}}" data-content="event-abs-circuit" data-event="event-2">
+                                <p class="event-name">{{advisorMeetingTuesday.topic}}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li class="events-group">
+                    <div class="top-info"><span>Wednesday</span></div>
+                    <ul>
+                        {% for advisorMeetingWednesday in advisorMeetingsWednesday %}
+                            <li class="single-event" data-start="{{advisorMeetingWednesday.date|date("H")}}:{{advisorMeetingWednesday.date|date("i")}}" data-end="{{advisorMeetingWednesday.date|date("H") + advisorMeetingWednesday.duration|date("H")}}:{{advisorMeetingWednesday.date|date("i") + advisorMeetingWednesday.duration|date("i")}}" data-content="event-abs-circuit" data-event="event-1">
+                                <p class="event-name">{{advisorMeetingWednesday.topic}}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li class="events-group">
+                    <div class="top-info"><span>Thursday</span></div>
+                    <ul>
+                        {% for advisorMeetingThursday in advisorMeetingsThursday %}
+                            <li class="single-event" data-start="{{advisorMeetingThursday.date|date("H")}}:{{advisorMeetingThursday.date|date("i")}}" data-end="{{advisorMeetingThursday.date|date("H") + advisorMeetingThursday.duration|date("H")}}:{{advisorMeetingThursday.date|date("i") + advisorMeetingThursday.duration|date("i")}}" data-content="event-abs-circuit" data-event="event-1">
+                                <p class="event-name">{{advisorMeetingThursday.topic}}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li class="events-group">
+                    <div class="top-info"><span>Friday</span></div>
+                    <ul>
+                        {% for advisorMeetingFriday in advisorMeetingsFriday %}
+                            <li class="single-event" data-start="{{advisorMeetingFriday.date|date("H")}}:{{advisorMeetingFriday.date|date("i")}}" data-end="{{advisorMeetingFriday.date|date("H") + advisorMeetingFriday.duration|date("H")}}:{{advisorMeetingFriday.date|date("i") + advisorMeetingFriday.duration|date("i")}}" data-content="event-abs-circuit" data-event="event-1">
+                                <p class="event-name">{{advisorMeetingFriday.topic}}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li class="events-group">
+                    <div class="top-info"><span>Saturday</span></div>
+                    <ul>
+                        {% for advisorMeetingSaturday in advisorMeetingsSaturday %}
+                            <li class="single-event" data-start="{{advisorMeetingSaturday.date|date("H")}}:{{advisorMeetingSaturday.date|date("i")}}" data-end="{{advisorMeetingSaturday.date|date("H") + advisorMeetingSaturday.duration|date("H")}}:{{advisorMeetingSaturday.date|date("i") + advisorMeetingSaturday.duration|date("i")}}" data-content="event-abs-circuit" data-event="event-1">
+                                <p class="event-name">{{advisorMeetingSaturday.topic}}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+                <li class="events-group">
+                    <div class="top-info"><span>Sunday</span></div>
+                    <ul>
+                        {% for advisorMeetingSunday in advisorMeetingsSunday %}
+                            <li class="single-event" data-start="{{advisorMeetingSunday.date|date("H")}}:{{advisorMeetingSunday.date|date("i")}}" data-end="{{advisorMeetingSunday.date|date("H") + advisorMeetingSunday.duration|date("H")}}:{{advisorMeetingSunday.date|date("i") + advisorMeetingSunday.duration|date("i")}}" data-content="event-abs-circuit" data-event="event-1">
+                                <p class="event-name">{{advisorMeetingSunday.topic}}</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block js %}<script type="text/javascript" src="{{ asset('js/scriptSchedule.js')}}"></script>{% endblock %}

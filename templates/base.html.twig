@@ -10,7 +10,7 @@
         <link href="{{ asset('css/navPersonnel.css')}}" rel="stylesheet">
         <link href="{{ asset('css/element.css')}}" rel="stylesheet">
         <link href="{{ asset('css/stylePerso.css')}}" rel="stylesheet">
-        <link href="{{ asset('css/cursor.css')}}" rel="stylesheet">
+        {% block css %}{% endblock %}
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 
@@ -117,19 +117,16 @@
                     <a href="{{path('customerList')}}"><li>Customer List</li></a>
                 {% endif %}
 
+                {% if is_granted('ROLE_SECRETARY') %}
+                    <a href="{{path('meetingRequests')}}"><li>Meeting Requests</li></a>
+                {% endif %}
+
                 {% if is_granted('ROLE_CUSTOMER') %}
                     <a href="{{path('beneficiariesManagement')}}"><li>beneficiaries Management</li></a>
                 {% endif %}
 
                 {% if is_granted('ROLE_SECRETARY') %}
                 {% endif %}
-                
-                <a href="#"><li>Action 2</li></a>
-                <a href="#"><li>Action 3</li></a>
-                <a href="#"><li>Action 4</li></a>
-                <a href="#"><li>Action 5</li></a>
-                <a href="#"><li>Action 6</li></a>
-                <a href="#"><li>Action 7</li></a>
             </ul>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}    
             <ul id="navRightUlProfil">
@@ -290,5 +287,6 @@
         <script type="text/javascript" src="{{ asset('js/script.js')}}"></script>
         <script type="text/javascript" src="{{ asset('js/scriptResearch.js')}}"></script>
         <script type="text/javascript" src="{{ asset('js/scriptApiGeo.js')}}"></script>
+        {% block js %}{% endblock %}
     </body>
 </html>

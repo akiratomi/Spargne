@@ -23,7 +23,7 @@
                 <tbody class="text-size-12 text-bold ">
                     {% for meetingRequest in meetingRequests %}
                         <tr class="td-quaternary {{ cycle(['table-color-primary-7', 'table-color-primary-6'], loop.index0) }}">
-                            <td class="text-align-center">{{meetingRequest.topic}}</td>
+                            <td class="text-align-center">{{meetingRequest.topic.libelle}}</td>
                             <td class="text-align-center">{{meetingRequest.desiredDate | date('d-m-Y')}}</td>
                             <td class="text-align-center">{{meetingRequest.customer.name}} {{meetingRequest.customer.firstName}}</td>
                             <td class="text-align-center">{{meetingRequest.customer.email}}</td>

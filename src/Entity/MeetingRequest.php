@@ -11,7 +11,49 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=MeetingRequestRepository::class)
  */
-#[ApiResource]
+#[ApiResource(normalizationContext:['groups' => ['read'],'enable_max_depth'=>true],
+collectionOperations:[
+    "GET" => [
+        'method' => 'GET', 
+        'path' => '/setMeetingRequest/{desiredDate}/{customerId}/{topiId}', 
+        'route_name' => 'setMeetingRequest',
+        'filters' => [],
+        'pagination_enabled' => false,
+        'openapi_context' => [
+            'summary' => "Récupère un utilisateur par son id",
+            'parameters' => [
+                [
+                    'in' => 'path',
+                    'name' => 'desiredDate',
+                    'description' => 'fils de pute',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'string'
+                    ]
+                ],
+                [
+                    'in' => 'path',
+                    'name' => 'customerId',
+                    'description' => 'olivier tier',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'integer'
+                    ]
+                ],
+                [
+                    'in' => 'path',
+                    'name' => 'topicId',
+                    'description' => 'starfoula',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'integer'
+                    ]
+                ]
+            ],
+        ],
+    ]
+]
+)]
 class MeetingRequest
 {
     /**
@@ -20,11 +62,6 @@ class MeetingRequest
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $topic;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -37,6 +74,12 @@ class MeetingRequest
      */
     private $customer;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=MeetingTopic::class, inversedBy="meetingRequests")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $topic;
+
     public function __construct()
     {
         $this->customer = new ArrayCollection();
@@ -45,18 +88,6 @@ class MeetingRequest
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTopic(): ?string
-    {
-        return $this->topic;
-    }
-
-    public function setTopic(string $topic): self
-    {
-        $this->topic = $topic;
-
-        return $this;
     }
 
     public function getDesiredDate(): ?\DateTimeInterface
@@ -79,6 +110,18 @@ class MeetingRequest
     public function setCustomer(?User $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getTopic(): ?MeetingTopic
+    {
+        return $this->topic;
+    }
+
+    public function setTopic(?MeetingTopic $topic): self
+    {
+        $this->topic = $topic;
 
         return $this;
     }

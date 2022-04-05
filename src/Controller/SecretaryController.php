@@ -10,6 +10,8 @@ use App\Entity\MeetingRequest;
 use App\Entity\User;
 use App\Entity\AdvisorSchedule;
 
+use App\Form\BookMeetingType;
+
 class SecretaryController extends AbstractController
 {
     #[Route('/secretary/meetingRequests', name: 'meetingRequests')]
@@ -61,8 +63,27 @@ class SecretaryController extends AbstractController
             }
         }
 
+        $advisorSchedule = new AdvisorSchedule();
+
+        $desiredDateExplode = explode("-", $currentMeetingRequest->getDesiredDate()->format('Y-m-d-H-i-s'));
+        $date = new \DateTime();
+        $date->setDate($desiredDateExplode[0], $desiredDateExplode[1], $desiredDateExplode[2]);
+        $date->setTime(8, 0);
+        $advisorSchedule->setDate($date);
+
+        $duration = new \DateTime();
+        $duration->setTime(1, 0);
+        $advisorSchedule->setDuration($duration);
+
+        $advisorSchedule->setTopic($currentMeetingRequest->getTopic());
+        $advisorSchedule->setCustomer($currentMeetingRequest->getCustomer());
+        $advisorSchedule->setAdvisor($currentMeetingRequest->getCustomer()->getAdvisor());
+        
+        $formBookMeeting = $this->createForm(BookMeetingType::class, $advisorSchedule);
+
         return $this->render('secretary/advisorSchedule.html.twig', [
             'currentMeetingRequest' => $currentMeetingRequest,
+            'formBookMeeting'=>$formBookMeeting->createView(),
             'advisorMeetingsMonday' => $advisorMeetingsMonday,
             'advisorMeetingsTuesday' => $advisorMeetingsTuesday,
             'advisorMeetingsWednesday' => $advisorMeetingsWednesday,

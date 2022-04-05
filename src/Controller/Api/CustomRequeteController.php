@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -9,6 +9,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
 use App\Entity\Account;
 use App\Entity\Transferts;
+use App\Entity\MeetingTopic;
+use App\Entity\MeetingRequest;
 
 class CustomRequeteController extends AbstractController
 {
@@ -82,6 +84,34 @@ class CustomRequeteController extends AbstractController
 
         $arrEncoded = json_encode($arr,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
         $retour = new Response($arrEncoded,
+        Response::HTTP_CREATED,
+        [
+            'content-type'=> 'application/json',
+            'charset' => "utf-8",
+        ]);
+        return $retour;
+    }
+
+    #[Route('/api/setMeetingRequest/{desiredDate}/{customerId}/{topicId}', name: 'setMeetingRequest')]
+    public function setMeetingRequest(string $desiredDate, int $customerId, int $topicId)
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($customerId);
+        $topic = $this->getDoctrine()->getRepository(MeetingTopic::class)->find($topicId);
+
+        $meetingRequest = new MeetingRequest();
+        $meetingRequest->setCustomer($user);
+        $meetingRequest->setTopic($topic);
+        $date = new \DateTime($desiredDate);
+        $meetingRequest->setDesiredDate($date);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($meetingRequest);
+        $em->flush();
+
+        $bool = true;
+
+        $arrEncoded = json_encode($bool,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+        $retour = new Response($bool,
         Response::HTTP_CREATED,
         [
             'content-type'=> 'application/json',

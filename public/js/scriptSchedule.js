@@ -100,6 +100,11 @@ jQuery(document).ready(function($){
 
 	/* --------------------------------- CODE PERSO --------------------------------- */
 
+	/* -------------- Hidden -------------- */
+	$('.hidden').each(function(){
+		$(this).hide();
+	});
+
 	/* -------------- Variable global -------------- */
 	var weeknum = 1;
 	var annee = 2022;
@@ -156,7 +161,12 @@ jQuery(document).ready(function($){
 		schedulePlan.initEvents()
 	});
 
-	$( "#meetingDuration" ).focusout(function() {
+	$( "#book_meeting_duration_hour" ).focusout(function() {
+		displayMeetingRequest();
+		schedulePlan.placeEvents();
+		schedulePlan.initEvents()
+	});
+	$( "#book_meeting_duration_minute" ).focusout(function() {
 		displayMeetingRequest();
 		schedulePlan.placeEvents();
 		schedulePlan.initEvents()
@@ -286,8 +296,12 @@ jQuery(document).ready(function($){
 
 	/* -------------- Refresh la prévisualisation du meeting request -------------- */
 	function displayMeetingRequest() {
-		var meetingStartDateTime = splitMeetingStartTime($('#meetingStartTime').val());
-		var meetingDuration = $('#meetingDuration').val().split(':');
+		var meetingStartDateTime = new Array();//splitMeetingStartTime($('#meetingStartTime').val());
+		meetingStartDateTime[0] = $('#book_meeting_date_date_year').val();
+		meetingStartDateTime[1] = $('#book_meeting_date_date_month').val();
+		meetingStartDateTime[2] = $('#book_meeting_date_date_day').val();
+		meetingStartDateTime[3] = $('#book_meeting_date_time_hour').val();
+		meetingStartDateTime[4] = $('#book_meeting_date_time_minute').val();
 
 		$('.events-group').eq(0).children('ul').children('#previsualisationMeeting').hide();
 		$('.events-group').eq(1).children('ul').children('#previsualisationMeeting').hide();
@@ -298,8 +312,8 @@ jQuery(document).ready(function($){
 		$('.events-group').eq(6).children('ul').children('#previsualisationMeeting').hide();
 
 		var meetingEndDateTime = new Array();
-		meetingEndDateTime[0] = parseInt(meetingStartDateTime[3]) + parseInt(meetingDuration[0]);
-		meetingEndDateTime[1] = parseInt(meetingStartDateTime[4]) + parseInt(meetingDuration[1]);
+		meetingEndDateTime[0] = parseInt(meetingStartDateTime[3]) + parseInt($('#book_meeting_duration_hour').val());
+		meetingEndDateTime[1] = parseInt(meetingStartDateTime[4]) + parseInt($('#book_meeting_duration_minute').val());
 		if(meetingEndDateTime[1] >= 60) {
 			meetingEndDateTime[1] -= 60;
 			meetingEndDateTime[0] += 1;

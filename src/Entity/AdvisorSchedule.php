@@ -34,15 +34,16 @@ class AdvisorSchedule
     private $duration;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $topic;
-
-    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="advisorSchedules")
      * @ORM\JoinColumn(nullable=false)
      */
     private $customer;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=MeetingTopic::class, inversedBy="advisorSchedules")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $topic;
 
     public function getId(): ?int
     {
@@ -85,18 +86,6 @@ class AdvisorSchedule
         return $this;
     }
 
-    public function getTopic(): ?string
-    {
-        return $this->topic;
-    }
-
-    public function setTopic(string $topic): self
-    {
-        $this->topic = $topic;
-
-        return $this;
-    }
-
     public function getCustomer(): ?User
     {
         return $this->customer;
@@ -105,6 +94,18 @@ class AdvisorSchedule
     public function setCustomer(?User $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getTopic(): ?MeetingTopic
+    {
+        return $this->topic;
+    }
+
+    public function setTopic(?MeetingTopic $topic): self
+    {
+        $this->topic = $topic;
 
         return $this;
     }

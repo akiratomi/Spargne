@@ -123,13 +123,14 @@ jQuery(document).ready(function($){
 	});
 	
 	/* -------------- Display au lancement -------------- */
-	var today = new Date(2022, 3, 3);
+	var today = new Date();
 	weeknum = getWeekNum(today);
 	annee = today.getFullYear();
 	$('#weekNum').text("Semaine : " + weeknum);
 	displayByWeekNum(weeknum, annee);
 	displayDesiredDateOfMeeting();
 	displayMeetingRequest();
+	schedulePlan.placeEvents();
 
 
 
@@ -155,7 +156,27 @@ jQuery(document).ready(function($){
 	});
 
 	/* -------------- Trigger des input -------------- */
-	$( "#meetingStartTime" ).focusout(function() {
+	$( "#book_meeting_date_date_year" ).focusout(function() {
+			displayMeetingRequest();
+			schedulePlan.placeEvents();
+			schedulePlan.initEvents()
+		});
+	$( "#book_meeting_date_date_month" ).focusout(function() {
+		displayMeetingRequest();
+		schedulePlan.placeEvents();
+		schedulePlan.initEvents()
+	});
+	   $( "#book_meeting_date_date_day" ).focusout(function() {
+		displayMeetingRequest();
+		schedulePlan.placeEvents();
+		schedulePlan.initEvents()
+	});
+	  $( "#book_meeting_date_time_hour" ).focusout(function() {
+		displayMeetingRequest();
+		schedulePlan.placeEvents();
+		schedulePlan.initEvents()
+	});
+	$( "#book_meeting_date_time_minute" ).focusout(function() {
 		displayMeetingRequest();
 		schedulePlan.placeEvents();
 		schedulePlan.initEvents()
@@ -296,12 +317,16 @@ jQuery(document).ready(function($){
 
 	/* -------------- Refresh la prévisualisation du meeting request -------------- */
 	function displayMeetingRequest() {
-		var meetingStartDateTime = new Array();//splitMeetingStartTime($('#meetingStartTime').val());
+		var meetingStartDateTime = new Array();
 		meetingStartDateTime[0] = $('#book_meeting_date_date_year').val();
-		meetingStartDateTime[1] = $('#book_meeting_date_date_month').val();
-		meetingStartDateTime[2] = $('#book_meeting_date_date_day').val();
-		meetingStartDateTime[3] = $('#book_meeting_date_time_hour').val();
-		meetingStartDateTime[4] = $('#book_meeting_date_time_minute').val();
+		if(parseInt($('#book_meeting_date_date_month').val()) < 10) { meetingStartDateTime[1] = '0' + $('#book_meeting_date_date_month').val(); }
+		else { meetingStartDateTime[1] = $('#book_meeting_date_date_month').val(); }
+		if(parseInt($('#book_meeting_date_date_day').val()) < 10) { meetingStartDateTime[2] = '0' + $('#book_meeting_date_date_day').val(); }
+		else { meetingStartDateTime[2] = $('#book_meeting_date_date_day').val(); }
+		if(parseInt($('#book_meeting_date_time_hour').val()) < 10) { meetingStartDateTime[3] = '0' + $('#book_meeting_date_time_hour').val(); }
+		else { meetingStartDateTime[3] = $('#book_meeting_date_time_hour').val(); }
+		if(parseInt($('#book_meeting_date_time_minute').val()) < 10) { meetingStartDateTime[4] = '0' + $('#book_meeting_date_time_minute').val(); }
+		else { meetingStartDateTime[4] = $('#book_meeting_date_time_minute').val(); }
 
 		$('.events-group').eq(0).children('ul').children('#previsualisationMeeting').hide();
 		$('.events-group').eq(1).children('ul').children('#previsualisationMeeting').hide();

@@ -115,10 +115,7 @@
                 {% if is_granted('ROLE_ADVISOR') %}
                     <a href="{{path('customerRequests')}}"><li>Customer Requests</li></a>
                     <a href="{{path('customerList')}}"><li>Customer List</li></a>
-                {% endif %}
-
-                {% if is_granted('ROLE_SECRETARY') %}
-                    <a href="{{path('meetingRequests')}}"><li>Meeting Requests</li></a>
+                    <a href="{{path('advisorSchedule', {idAccount: app.user.id} )}}"><li>Your Schedule</li></a>
                 {% endif %}
 
                 {% if is_granted('ROLE_CUSTOMER') %}
@@ -126,6 +123,7 @@
                 {% endif %}
 
                 {% if is_granted('ROLE_SECRETARY') %}
+                    <a href="{{path('meetingRequests')}}"><li>Meeting Requests</li></a>
                 {% endif %}
             </ul>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}    

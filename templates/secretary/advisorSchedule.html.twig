@@ -34,7 +34,8 @@
                     </tbody>
                 </table>
             </div>
-
+            <input type="datetime-local" id="meetingStartTime" value="{{currentMeetingRequest.desiredDate|date('Y-m-d')}}T08:00" required></input>
+            <input type="time" id="meetingDuration" value="01:00" required></input>
         </div>
     </div>
 
@@ -94,7 +95,10 @@
                 <li class="events-group">
                     <div class="top-info"><span>Monday</span></div>
                     <ul>
-                        <li class="single-event" id="currentMeeting" data-start="07:30" data-end="17:30" data-event="event-0"></li>
+                        <li class="single-event" id="previsualisationDesiredDate" data-start="07:30" data-end="17:30" data-event="previsualisationDesiredDate"></li>
+                        <li class="single-event" id="previsualisationMeeting" data-start="08:00" data-end="08:30" data-event="previsualisationMeeting">
+                            <p class="event-name">{{currentMeetingRequest.topic}}</p>
+                        </li>
                         {% for advisorMeetingMonday in advisorMeetingsMonday %}
                             <li class="single-event" data-start="{{advisorMeetingMonday.date|date("H")}}:{{advisorMeetingMonday.date|date("i")}}" data-end="{{advisorMeetingMonday.date|date("H") + advisorMeetingMonday.duration|date("H")}}:{{advisorMeetingMonday.date|date("i") + advisorMeetingMonday.duration|date("i")}}" data-weekNum={{advisorMeetingMonday.date|date("W")}} data-event="event-1">
                                 <p class="event-name">{{advisorMeetingMonday.topic}}</p>
@@ -106,7 +110,10 @@
                 <li class="events-group">
                     <div class="top-info"><span>Tuesday</span></div>
                     <ul>
-                        <li class="single-event" id="currentMeeting" data-start="07:30" data-end="17:30" data-event="event-0"></li>
+                        <li class="single-event" id="previsualisationDesiredDate" data-start="07:30" data-end="17:30" data-event="previsualisationDesiredDate"></li>
+                        <li class="single-event" id="previsualisationMeeting" data-start="08:00" data-end="08:30" data-event="previsualisationMeeting">
+                            <p class="event-name">{{currentMeetingRequest.topic}}</p>
+                        </li>
                         {% for advisorMeetingTuesday in advisorMeetingsTuesday %}
                             <li class="single-event" data-start="{{advisorMeetingTuesday.date|date("H")}}:{{advisorMeetingTuesday.date|date("i")}}" data-end="{{advisorMeetingTuesday.date|date("H") + advisorMeetingTuesday.duration|date("H")}}:{{advisorMeetingTuesday.date|date("i") + advisorMeetingTuesday.duration|date("i")}}" data-weekNum={{advisorMeetingTuesday.date|date("W")}} data-event="event-2">
                                 <p class="event-name">{{advisorMeetingTuesday.topic}}</p>
@@ -118,7 +125,10 @@
                 <li class="events-group">
                     <div class="top-info"><span>Wednesday</span></div>
                     <ul>
-                        <li class="single-event" id="currentMeeting" data-start="07:30" data-end="17:30" data-event="event-0"></li>
+                        <li class="single-event" id="previsualisationDesiredDate" data-start="07:30" data-end="17:30" data-event="previsualisationDesiredDate"></li>
+                        <li class="single-event" id="previsualisationMeeting" data-start="08:00" data-end="08:30" data-event="previsualisationMeeting">
+                            <p class="event-name">{{currentMeetingRequest.topic}}</p>
+                        </li>
                         {% for advisorMeetingWednesday in advisorMeetingsWednesday %}
                             <li class="single-event" data-start="{{advisorMeetingWednesday.date|date("H")}}:{{advisorMeetingWednesday.date|date("i")}}" data-end="{{advisorMeetingWednesday.date|date("H") + advisorMeetingWednesday.duration|date("H")}}:{{advisorMeetingWednesday.date|date("i") + advisorMeetingWednesday.duration|date("i")}}" data-weekNum={{advisorMeetingWednesday.date|date("W")}} data-event="event-1">
                                 <p class="event-name">{{advisorMeetingWednesday.topic}}</p>
@@ -130,7 +140,10 @@
                 <li class="events-group">
                     <div class="top-info"><span>Thursday</span></div>
                     <ul>
-                        <li class="single-event" id="currentMeeting" data-start="07:30" data-end="17:30" data-event="event-0"></li>
+                        <li class="single-event" id="previsualisationDesiredDate" data-start="07:30" data-end="17:30" data-event="previsualisationDesiredDate"></li>
+                        <li class="single-event" id="previsualisationMeeting" data-start="08:00" data-end="08:30" data-event="previsualisationMeeting">
+                            <p class="event-name">{{currentMeetingRequest.topic}}</p>
+                        </li>
                         {% for advisorMeetingThursday in advisorMeetingsThursday %}
                             <li class="single-event" data-start="{{advisorMeetingThursday.date|date("H")}}:{{advisorMeetingThursday.date|date("i")}}" data-end="{{advisorMeetingThursday.date|date("H") + advisorMeetingThursday.duration|date("H")}}:{{advisorMeetingThursday.date|date("i") + advisorMeetingThursday.duration|date("i")}}" data-weekNum={{advisorMeetingThursday.date|date("W")}} data-event="event-1">
                                 <p class="event-name">{{advisorMeetingThursday.topic}}</p>
@@ -142,7 +155,10 @@
                 <li class="events-group">
                     <div class="top-info"><span>Friday</span></div>
                     <ul>
-                        <li class="single-event" id="currentMeeting" data-start="07:30" data-end="17:30" data-event="event-0"></li>
+                        <li class="single-event" id="previsualisationDesiredDate" data-start="07:30" data-end="17:30" data-event="previsualisationDesiredDate"></li>
+                        <li class="single-event" id="previsualisationMeeting" data-start="08:00" data-end="08:30" data-event="previsualisationMeeting">
+                            <p class="event-name">{{currentMeetingRequest.topic}}</p>
+                        </li>
                         {% for advisorMeetingFriday in advisorMeetingsFriday %}
                             <li class="single-event" data-start="{{advisorMeetingFriday.date|date("H")}}:{{advisorMeetingFriday.date|date("i")}}" data-end="{{advisorMeetingFriday.date|date("H") + advisorMeetingFriday.duration|date("H")}}:{{advisorMeetingFriday.date|date("i") + advisorMeetingFriday.duration|date("i")}}" data-weekNum={{advisorMeetingFriday.date|date("W")}} data-event="event-1">
                                 <p class="event-name">{{advisorMeetingFriday.topic}}</p>
@@ -154,7 +170,10 @@
                 <li class="events-group">
                     <div class="top-info"><span>Saturday</span></div>
                     <ul>
-                        <li class="single-event" id="currentMeeting" data-start="07:30" data-end="17:30" data-event="event-0"></li>
+                        <li class="single-event" id="previsualisationDesiredDate" data-start="07:30" data-end="17:30" data-event="previsualisationDesiredDate"></li>
+                        <li class="single-event" id="previsualisationMeeting" data-start="08:00" data-end="08:30" data-event="previsualisationMeeting">
+                            <p class="event-name">{{currentMeetingRequest.topic}}</p>
+                        </li>
                         {% for advisorMeetingSaturday in advisorMeetingsSaturday %}
                             <li class="single-event" data-start="{{advisorMeetingSaturday.date|date("H")}}:{{advisorMeetingSaturday.date|date("i")}}" data-end="{{advisorMeetingSaturday.date|date("H") + advisorMeetingSaturday.duration|date("H")}}:{{advisorMeetingSaturday.date|date("i") + advisorMeetingSaturday.duration|date("i")}}" data-weekNum={{advisorMeetingSaturday.date|date("W")}} data-event="event-1">
                                 <p class="event-name">{{advisorMeetingSaturday.topic}}</p>
@@ -166,7 +185,10 @@
                 <li class="events-group">
                     <div class="top-info"><span>Sunday</span></div>
                     <ul>
-                        <li class="single-event" id="currentMeeting" data-start="07:30" data-end="17:30" data-event="event-0"></li>
+                        <li class="single-event" id="previsualisationDesiredDate" data-start="07:30" data-end="17:30" data-event="previsualisationDesiredDate"></li>
+                        <li class="single-event" id="previsualisationMeeting" data-start="08:00" data-end="08:30" data-event="previsualisationMeeting">
+                            <p class="event-name">{{currentMeetingRequest.topic}}</p>
+                        </li>
                         {% for advisorMeetingSunday in advisorMeetingsSunday %}
                             <li class="single-event" data-start="{{advisorMeetingSunday.date|date("H")}}:{{advisorMeetingSunday.date|date("i")}}" data-end="{{advisorMeetingSunday.date|date("H") + advisorMeetingSunday.duration|date("H")}}:{{advisorMeetingSunday.date|date("i") + advisorMeetingSunday.duration|date("i")}}" data-weekNum={{advisorMeetingSunday.date|date("W")}} data-event="event-1">
                                 <p class="event-name">{{advisorMeetingSunday.topic}}</p>

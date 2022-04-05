@@ -2,7 +2,10 @@ jQuery(document).ready(function($){
 
 	/* --------------------------------- AFFICHAGE DU SCHEDULE (CODEPEN) --------------------------------- */
 
+	var schedulePlan;
+
 	function SchedulePlan( element ) {
+		schedulePlan = this;
 		this.element = element;
 		this.timeline = this.element.find('.timeline');
 		this.timelineItems = this.timeline.find('li');
@@ -39,8 +42,9 @@ jQuery(document).ready(function($){
 		var self = this;
 		this.singleEvents.each(function(){
 			//créer le .event-date element pour chaque element
-			if($(this).attr('data-event') != 'event-0') {
+			if($(this).attr('data-event') != 'previsualisationDesiredDate') {
 				var durationLabel = '<span class="event-date">'+$(this).data('start')+' - '+$(this).data('end')+'</span>';
+				$(this).children('.event-date').remove();
 				$(this).prepend($(durationLabel));
 			}
 		});
@@ -108,39 +112,6 @@ jQuery(document).ready(function($){
 	var saturdayDate;
 	var sundayDate;
 
-	/* -------------- Prévisualisation meeting desired date -------------- */
-	function displayDesiredDateOfMeeting() {
-		var meetingWeekNum = $("#meetingDate").attr('data-weekNum');
-		if(meetingWeekNum == weeknum) {
-			var date = $("#meetingDate").attr('data-date').split("/");
-			var meetingDate = date[2] + date[1] + date[0];
-			
-			switch (meetingDate) {
-				case mondayDate:
-					$('.events-group').eq(0).children('ul').children('#currentMeeting').fadeIn(200);
-					break;
-				case tuesdayDate:
-					$('.events-group').eq(0).children('ul').children('#currentMeeting').fadeIn(200);
-					break;
-				case wednesdayDate:
-					$('.events-group').eq(0).children('ul').children('#currentMeeting').fadeIn(200);
-					break;
-				case thursdayDate:
-					$('.events-group').eq(0).children('ul').children('#currentMeeting').fadeIn(200);
-					break;
-				case fridayDate:
-					$('.events-group').eq(0).children('ul').children('#currentMeeting').fadeIn(200);
-					break;
-				case saturdayDate:
-					$('.events-group').eq(0).children('ul').children('#currentMeeting').fadeIn(200);
-					break;
-				case sundayDate:
-					$('.events-group').eq(0).children('ul').children('#currentMeeting').fadeIn(200);
-					break;
-			}
-		}
-	}
-
 	/* -------------- Cache tout les meetings -------------- */
 	$('.single-event').each(function(){
 		$(this).hide();
@@ -153,6 +124,7 @@ jQuery(document).ready(function($){
 	$('#weekNum').text("Semaine : " + weeknum);
 	displayByWeekNum(weeknum, annee);
 	displayDesiredDateOfMeeting();
+	displayMeetingRequest();
 
 
 
@@ -162,6 +134,9 @@ jQuery(document).ready(function($){
 		$('#weekNum').text("Semaine : " + weeknum);
 		displayByWeekNum(weeknum, annee);
 		displayDesiredDateOfMeeting();
+		displayMeetingRequest();
+		schedulePlan.placeEvents();
+		schedulePlan.initEvents()
 	});
 
 	$( "#rightArrowWeekNum" ).click(function() {
@@ -169,6 +144,22 @@ jQuery(document).ready(function($){
 		$('#weekNum').text("Semaine : " + weeknum);
 		displayByWeekNum(weeknum, annee);
 		displayDesiredDateOfMeeting();
+		displayMeetingRequest();
+		schedulePlan.placeEvents();
+		schedulePlan.initEvents()
+	});
+
+	/* -------------- Trigger des input -------------- */
+	$( "#meetingStartTime" ).focusout(function() {
+		displayMeetingRequest();
+		schedulePlan.placeEvents();
+		schedulePlan.initEvents()
+	});
+
+	$( "#meetingDuration" ).focusout(function() {
+		displayMeetingRequest();
+		schedulePlan.placeEvents();
+		schedulePlan.initEvents()
 	});
 
 
@@ -260,10 +251,140 @@ jQuery(document).ready(function($){
 		});
 	}
 
+	/* -------------- Prévisualisation meeting desired date -------------- */
+	function displayDesiredDateOfMeeting() {
+		var meetingWeekNum = $("#meetingDate").attr('data-weekNum');
+		if(meetingWeekNum == weeknum) {
+			var date = $("#meetingDate").attr('data-date').split("/");
+			var meetingDate = date[2] + date[1] + date[0];
+			
+			switch (meetingDate) {
+				case mondayDate:
+					$('.events-group').eq(0).children('ul').children('#previsualisationDesiredDate').fadeIn(200);
+					break;
+				case tuesdayDate:
+					$('.events-group').eq(1).children('ul').children('#previsualisationDesiredDate').fadeIn(200);
+					break;
+				case wednesdayDate:
+					$('.events-group').eq(2).children('ul').children('#previsualisationDesiredDate').fadeIn(200);
+					break;
+				case thursdayDate:
+					$('.events-group').eq(3).children('ul').children('#previsualisationDesiredDate').fadeIn(200);
+					break;
+				case fridayDate:
+					$('.events-group').eq(4).children('ul').children('#previsualisationDesiredDate').fadeIn(200);
+					break;
+				case saturdayDate:
+					$('.events-group').eq(5).children('ul').children('#previsualisationDesiredDate').fadeIn(200);
+					break;
+				case sundayDate:
+					$('.events-group').eq(6).children('ul').children('#previsualisationDesiredDate').fadeIn(200);
+					break;
+			}
+		}
+	}
+
+	/* -------------- Refresh la prévisualisation du meeting request -------------- */
+	function displayMeetingRequest() {
+		var meetingStartDateTime = splitMeetingStartTime($('#meetingStartTime').val());
+		var meetingDuration = $('#meetingDuration').val().split(':');
+
+		$('.events-group').eq(0).children('ul').children('#previsualisationMeeting').hide();
+		$('.events-group').eq(1).children('ul').children('#previsualisationMeeting').hide();
+		$('.events-group').eq(2).children('ul').children('#previsualisationMeeting').hide();
+		$('.events-group').eq(3).children('ul').children('#previsualisationMeeting').hide();
+		$('.events-group').eq(4).children('ul').children('#previsualisationMeeting').hide();
+		$('.events-group').eq(5).children('ul').children('#previsualisationMeeting').hide();
+		$('.events-group').eq(6).children('ul').children('#previsualisationMeeting').hide();
+
+		var meetingEndDateTime = new Array();
+		meetingEndDateTime[0] = parseInt(meetingStartDateTime[3]) + parseInt(meetingDuration[0]);
+		meetingEndDateTime[1] = parseInt(meetingStartDateTime[4]) + parseInt(meetingDuration[1]);
+		if(meetingEndDateTime[1] >= 60) {
+			meetingEndDateTime[1] -= 60;
+			meetingEndDateTime[0] += 1;
+		}
+		if(meetingEndDateTime[0] < 10) {meetingEndDateTime[0] = '0' + meetingEndDateTime[0];}
+		if(meetingEndDateTime[1] < 10) {meetingEndDateTime[1] = '0' + meetingEndDateTime[1];}
+
+		var meetingRequestDate = new Date(meetingStartDateTime[0], meetingStartDateTime[1] - 1, meetingStartDateTime[2]);
+		var meetingWeekNum = getWeekNum(meetingRequestDate);
+		if(meetingWeekNum == weeknum) {
+			var meetingStartDate = meetingStartDateTime[0] + meetingStartDateTime[1] + meetingStartDateTime[2];
+			
+			switch (meetingStartDate) {
+				case mondayDate:
+					$('.events-group').eq(0).children('ul').children('#previsualisationMeeting').fadeIn(200);
+					$('.events-group').eq(0).children('ul').children('#previsualisationMeeting').attr('data-start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(0).children('ul').children('#previsualisationMeeting').data('start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(0).children('ul').children('#previsualisationMeeting').attr('data-end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					$('.events-group').eq(0).children('ul').children('#previsualisationMeeting').data('end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					break;
+				case tuesdayDate:
+					$('.events-group').eq(1).children('ul').children('#previsualisationMeeting').fadeIn(200);
+					$('.events-group').eq(1).children('ul').children('#previsualisationMeeting').attr('data-start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(1).children('ul').children('#previsualisationMeeting').data('start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(1).children('ul').children('#previsualisationMeeting').attr('data-end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					$('.events-group').eq(1).children('ul').children('#previsualisationMeeting').data('end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					break;
+				case wednesdayDate:
+					$('.events-group').eq(2).children('ul').children('#previsualisationMeeting').fadeIn(200);
+					$('.events-group').eq(2).children('ul').children('#previsualisationMeeting').attr('data-start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(2).children('ul').children('#previsualisationMeeting').data('start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(2).children('ul').children('#previsualisationMeeting').attr('data-end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					$('.events-group').eq(2).children('ul').children('#previsualisationMeeting').data('end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					break;
+				case thursdayDate:
+					$('.events-group').eq(3).children('ul').children('#previsualisationMeeting').fadeIn(200);
+					$('.events-group').eq(3).children('ul').children('#previsualisationMeeting').attr('data-start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(3).children('ul').children('#previsualisationMeeting').data('start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(3).children('ul').children('#previsualisationMeeting').attr('data-end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					$('.events-group').eq(3).children('ul').children('#previsualisationMeeting').data('end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					break;
+				case fridayDate:
+					$('.events-group').eq(4).children('ul').children('#previsualisationMeeting').fadeIn(200);
+					$('.events-group').eq(4).children('ul').children('#previsualisationMeeting').attr('data-start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(4).children('ul').children('#previsualisationMeeting').data('start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(4).children('ul').children('#previsualisationMeeting').attr('data-end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					$('.events-group').eq(4).children('ul').children('#previsualisationMeeting').data('end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					break;
+				case saturdayDate:
+					$('.events-group').eq(5).children('ul').children('#previsualisationMeeting').fadeIn(200);
+					$('.events-group').eq(5).children('ul').children('#previsualisationMeeting').attr('data-start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(5).children('ul').children('#previsualisationMeeting').data('start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(5).children('ul').children('#previsualisationMeeting').attr('data-end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					$('.events-group').eq(5).children('ul').children('#previsualisationMeeting').data('end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					break;
+				case sundayDate:
+					$('.events-group').eq(6).children('ul').children('#previsualisationMeeting').fadeIn(200);
+					$('.events-group').eq(6).children('ul').children('#previsualisationMeeting').attr('data-start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(6).children('ul').children('#previsualisationMeeting').data('start', meetingStartDateTime[3] + ':' + meetingStartDateTime[4]);
+					$('.events-group').eq(6).children('ul').children('#previsualisationMeeting').attr('data-end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					$('.events-group').eq(6).children('ul').children('#previsualisationMeeting').data('end', meetingEndDateTime[0] + ':' + meetingEndDateTime[1]);
+					break;
+			}
+		}
+	}
+
+
+
 	function getFirstDayOfFirstWeekOfYear(year) {
 		var fourthDayOfYear = new Date(year, 0, 4)
 		var firstDayOfFirstWeekOfYear = fourthDayOfYear;
 		firstDayOfFirstWeekOfYear.setDate(fourthDayOfYear.getDate() - fourthDayOfYear.getDay() + 1);
 		return firstDayOfFirstWeekOfYear
+	}
+
+	function splitMeetingStartTime(meetingStartTime){
+		var splitOne = meetingStartTime.split("-");
+		var splitTwo = splitOne[2].split("T");
+		var splitThree = splitTwo[1].split(":");
+		var meetingStartTime = new Array();
+		meetingStartTime[0] = splitOne[0];
+		meetingStartTime[1] = splitOne[1];
+		meetingStartTime[2] = splitTwo[0];
+		meetingStartTime[3] = splitThree[0];
+		meetingStartTime[4] = splitThree[1];
+		return meetingStartTime;
 	}
 });

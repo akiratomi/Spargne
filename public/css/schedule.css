@@ -214,9 +214,14 @@ ol, ul {
 
 
 
-.cd-schedule .single-event[data-event="event-0"],
-.cd-schedule [data-event="event-0"] .header-bg {
-    background: #30ac2552;
+.cd-schedule .single-event[data-event="previsualisationDesiredDate"],
+.cd-schedule [data-event="previsualisationDesiredDate"] .header-bg {
+    background: #30ac252d;
+}
+
+.cd-schedule .single-event[data-event="previsualisationMeeting"],
+.cd-schedule [data-event="previsualisationMeeting"] .header-bg {
+    background: #7c6a1a5d;
 }
 
 .cd-schedule .single-event[data-event="event-1"],

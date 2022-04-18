@@ -119,4 +119,33 @@ class CustomRequeteController extends AbstractController
         ]);
         return $retour;
     }
+
+    #[Route('/api/getMeetingTopic', name: 'getMeetingTopic')]
+    public function getMeetingTopic(): Response|Account
+    {
+        $topic = $this->getDoctrine()->getRepository(MeetingTopic::class)->findAll();
+        
+        $arr = array();
+
+        for($i = 0 ; $i < count($topic) ; $i++){
+            $obj = (object) array(
+                'id' => $topic[$i]->getId(),
+                'libelle' => $topic[$i]->getLibelle(),
+            );
+
+            array_push($arr, $obj);
+        }
+
+        $arrEncoded = json_encode($arr,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+        $retour = new Response($arrEncoded,
+        Response::HTTP_CREATED,
+        [
+            'content-type'=> 'application/json',
+            'charset' => "utf-8",
+        ]);
+        return $retour;
+    }
+
+
+    
 }

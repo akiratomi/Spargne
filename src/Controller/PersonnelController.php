@@ -45,18 +45,18 @@ class PersonnelController extends AbstractController
             
             $html = '
             <html lang="fr">
-            <head>
-            <meta charset="utf-8">
-            <title>Titre de la page</title>
-            <link rel=\_"stylesheet" href="style.css">
-            <script src="script.js"></script>
-            </head>
-            <style>
-            </style>
-            <body>
-            <p>You have been hire in S\'pargne Bank. Please click the link to create your advisor account.</p>
-            <a href="'.$this->getParameter('website_url').'gettingHire/advisor/'.$token.'">Register</a>
-            </body>
+                <head>
+                    <meta charset="utf-8">
+                    <title>Titre de la page</title>
+                    <link rel=\_"stylesheet" href="style.css">
+                    <script src="script.js"></script>
+                </head>
+                <style>
+                </style>
+                <body>
+                    <p>You have been hire in S\'pargne Bank. Please click the link to create your advisor account.</p>
+                    <a href="'.$this->getParameter('website_url').'gettingHire/advisor/'.$token.'">Register</a>
+                </body>
             </html>
             ';
 

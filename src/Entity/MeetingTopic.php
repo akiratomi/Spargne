@@ -11,7 +11,23 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=MeetingTopicRepository::class)
  */
-#[ApiResource]
+#[ApiResource(normalizationContext:['groups' => ['read'],'enable_max_depth'=>true],
+collectionOperations:[
+    "GET" => [
+        'method' => 'GET', 
+        'path' => '/getMeetingTopic', 
+        'route_name' => 'getMeetingTopic',
+        'filters' => [],
+        'pagination_enabled' => false,
+        'openapi_context' => [
+            'summary' => "Récupère un utilisateur par son id",
+            'parameters' => [
+                
+            ],
+        ],
+    ]
+]
+)]
 class MeetingTopic
 {
     /**
@@ -25,12 +41,6 @@ class MeetingTopic
      * @ORM\Column(type="string", length=255)
      */
     private $libelle;
-
-    public function __construct()
-    {
-        $this->meetingRequests = new ArrayCollection();
-        $this->advisorSchedules = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {

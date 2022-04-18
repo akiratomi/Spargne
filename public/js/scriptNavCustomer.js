@@ -41,28 +41,35 @@ let other = 0;
 let o = true;
 $("#amount").on("input", function() {
     nb_chiffre++;
+
     if ($("#amount").val() < 1000000) {
+
         if (nb_chiffre == 1) {
             if ($("#amount").val() == 0) {
                 nb_chiffre--;
             }
             $("#amount").val($("#amount").val() / 100);
-            console.log(nb_chiffre);
+
         } else if (nb_chiffre >= 2) {
+
             $("#amount").val(($("#amount").val() * 10).toFixed(2));
-            console.log(nb_chiffre);
+
         }
 
     } else {
+
         $("#amount").val(1000000, 00);
+
     }
 
 });
 
 $("#amount").on("keydown", function(event) {
     if (event.which == 8) {
+
         $("#amount").val(0);
         nb_chiffre = -1;
+
     }
 });
 
